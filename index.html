@@ -4,6 +4,12 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>PhysioLearn — AI Physiotherapy Platform</title>
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#FF7B54"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="PhysioLearn"/>
+<link rel="apple-touch-icon" href="icon-192.png"/>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet"/>
 <style>
 :root {
@@ -457,6 +463,15 @@ const observer = new IntersectionObserver((entries)=>{
   entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
 },{threshold:0.1});
 document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// Register Service Worker (PWA)
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js')
+      .then(()=>console.log('✅ PhysioLearn PWA ready!'))
+      .catch(e=>console.log('SW error:',e));
+  });
+}
 </script>
 </body>
 </html>
