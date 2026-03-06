@@ -1,4 +1,4 @@
-const CACHE_NAME = 'physiolearn-v1';
+const CACHE_NAME = 'physiolearn-v2';
 const ASSETS = [
   '/Physiolearn/',
   '/Physiolearn/index.html',
