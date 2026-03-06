@@ -179,9 +179,11 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
 
   <!-- STEP 1 -->
   <div class="step-panel active" id="step-1">
+
+    <!-- BASIC INFO -->
     <div class="card">
       <div class="card-title">Tell us about yourself</div>
-      <div class="card-sub">Helps us personalise your recovery plan completely</div>
+      <div class="card-sub">Helps us build a complete clinical picture for your personalised recovery</div>
       <div class="form-row">
         <div class="form-group"><label class="form-label">First Name <span>*</span></label><input class="form-input" type="text" placeholder="Your name" id="fname"/></div>
         <div class="form-group"><label class="form-label">Age <span>*</span></label><input class="form-input" type="number" placeholder="e.g. 28" id="age"/></div>
@@ -190,11 +192,129 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);m
         <div class="form-group"><label class="form-label">Gender <span>*</span></label>
           <select class="form-select" id="gender"><option value="">Select...</option><option>Male</option><option>Female</option><option>Other</option></select>
         </div>
-        <div class="form-group"><label class="form-label">Occupation</label><input class="form-input" type="text" placeholder="e.g. Teacher, Engineer" id="occupation"/></div>
+        <div class="form-group"><label class="form-label">City</label><input class="form-input" type="text" placeholder="e.g. Mumbai, Delhi" id="city"/></div>
       </div>
-      <div class="form-group"><label class="form-label">City</label><input class="form-input" type="text" placeholder="e.g. Mumbai, Delhi" id="city"/></div>
     </div>
-    <div class="nav-btns"><button class="btn-next" onclick="goNext(1)">Continue → Select Body Parts</button></div>
+
+    <!-- OCCUPATIONAL PROFILE -->
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <div style="width:38px;height:38px;border-radius:10px;background:var(--gold-l);border:1.5px solid #FFD0A0;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#128188;</div>
+        <div>
+          <div style="font-family:Playfair Display,serif;font-size:17px;font-weight:700;color:var(--text)">Occupational Profile</div>
+          <div style="font-size:11px;color:var(--light);font-weight:600">Occupation is one of the most critical factors in physiotherapy diagnosis</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">What type of work do you do? <span>*</span></label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="occTypeGrid">
+          <div class="body-item" onclick="selectOccType(this,'desk')"><div class="bi-check">&#10003;</div><div class="bi-icon">&#128187;</div><div class="bi-name">Desk / Computer</div></div>
+          <div class="body-item" onclick="selectOccType(this,'standing')"><div class="bi-check">&#10003;</div><div class="bi-icon">&#129485;</div><div class="bi-name">Standing / Retail</div></div>
+          <div class="body-item" onclick="selectOccType(this,'physical')"><div class="bi-check">&#10003;</div><div class="bi-icon">&#127959;</div><div class="bi-name">Physical / Labour</div></div>
+          <div class="body-item" onclick="selectOccType(this,'driving')"><div class="bi-check">&#10003;</div><div class="bi-icon">&#128663;</div><div class="bi-name">Driving / Transport</div></div>
+          <div class="body-item" onclick="selectOccType(this,'healthcare')"><div class="bi-check">&#10003;</div><div class="bi-icon">&#127973;</div><div class="bi-name">Healthcare Worker</div></div>
+          <div class="body-item" onclick="selectOccType(this,'student')"><div class="bi-check">&#10003;</div><div class="bi-icon">&#128218;</div><div class="bi-name">Student</div></div>
+          <div class="body-item" onclick="selectOccType(this,'homemaker')"><div class="bi-check">&#10003;</div><div class="bi-icon">&#127968;</div><div class="bi-name">Homemaker</div></div>
+          <div class="body-item" onclick="selectOccType(this,'other')"><div class="bi-check">&#10003;</div><div class="bi-icon">&#128084;</div><div class="bi-name">Other</div></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Job title / Occupation name</label>
+        <input class="form-input" type="text" placeholder="e.g. Software Engineer, Nurse, Construction Worker, Teacher..." id="occupation"/>
+      </div>
+
+      <!-- DYNAMIC FIELDS based on occupation type -->
+      <div id="occDynamicFields"></div>
+
+      <!-- UNIVERSAL OCCUPATION QUESTIONS -->
+      <div class="form-group">
+        <label class="form-label">Hours worked per day</label>
+        <div class="chips-row" id="hoursGrid">
+          <div class="chip" onclick="selectOne(this,'hoursGrid')">Under 4 hrs</div>
+          <div class="chip" onclick="selectOne(this,'hoursGrid')">4-6 hrs</div>
+          <div class="chip" onclick="selectOne(this,'hoursGrid')">6-8 hrs</div>
+          <div class="chip" onclick="selectOne(this,'hoursGrid')">8-10 hrs</div>
+          <div class="chip" onclick="selectOne(this,'hoursGrid')">10+ hrs</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Years in this occupation</label>
+        <div class="chips-row" id="yearsGrid">
+          <div class="chip" onclick="selectOne(this,'yearsGrid')">Under 1 yr</div>
+          <div class="chip" onclick="selectOne(this,'yearsGrid')">1-3 yrs</div>
+          <div class="chip" onclick="selectOne(this,'yearsGrid')">3-5 yrs</div>
+          <div class="chip" onclick="selectOne(this,'yearsGrid')">5-10 yrs</div>
+          <div class="chip" onclick="selectOne(this,'yearsGrid')">10+ yrs</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Do you take regular breaks at work?</label>
+        <div class="chips-row" id="breaksGrid">
+          <div class="chip" onclick="selectOne(this,'breaksGrid')">Yes, hourly</div>
+          <div class="chip" onclick="selectOne(this,'breaksGrid')">Occasionally</div>
+          <div class="chip" onclick="selectOne(this,'breaksGrid')">Rarely</div>
+          <div class="chip" onclick="selectOne(this,'breaksGrid')">Never</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Did your pain start or worsen after starting this job?</label>
+        <div class="chips-row" id="jobPainGrid">
+          <div class="chip" onclick="selectOne(this,'jobPainGrid')">Yes, directly related</div>
+          <div class="chip" onclick="selectOne(this,'jobPainGrid')">Possibly related</div>
+          <div class="chip" onclick="selectOne(this,'jobPainGrid')">Not related</div>
+          <div class="chip" onclick="selectOne(this,'jobPainGrid')">Pain existed before</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Does pain affect your ability to work?</label>
+        <div class="chips-row" id="workImpactGrid">
+          <div class="chip" onclick="selectOne(this,'workImpactGrid')">Yes, severely</div>
+          <div class="chip" onclick="selectOne(this,'workImpactGrid')">Yes, moderately</div>
+          <div class="chip" onclick="selectOne(this,'workImpactGrid')">Mildly</div>
+          <div class="chip" onclick="selectOne(this,'workImpactGrid')">Not at all</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIFESTYLE -->
+    <div class="card">
+      <div style="font-family:Playfair Display,serif;font-size:17px;font-weight:700;color:var(--text);margin-bottom:4px;">&#127939; Lifestyle &amp; Activity</div>
+      <div class="card-sub">Helps us understand your baseline fitness and daily physical load</div>
+
+      <div class="form-group">
+        <label class="form-label">Physical activity level</label>
+        <div class="chips-row" id="activityGrid">
+          <div class="chip" onclick="selectOne(this,'activityGrid')">&#128715; Sedentary</div>
+          <div class="chip" onclick="selectOne(this,'activityGrid')">&#128694; Light (walks)</div>
+          <div class="chip" onclick="selectOne(this,'activityGrid')">&#127947; Moderate gym 2-3x</div>
+          <div class="chip" onclick="selectOne(this,'activityGrid')">&#9889; Active daily</div>
+          <div class="chip" onclick="selectOne(this,'activityGrid')">&#127942; Athlete</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Sport or physical hobby?</label>
+        <input class="form-input" type="text" placeholder="e.g. Cricket, Badminton, Yoga, Cycling, Swimming..." id="sport"/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Sleep quality</label>
+        <div class="chips-row" id="sleepGrid">
+          <div class="chip" onclick="selectOne(this,'sleepGrid')">Good 7-8 hrs</div>
+          <div class="chip" onclick="selectOne(this,'sleepGrid')">Moderate 5-6 hrs</div>
+          <div class="chip" onclick="selectOne(this,'sleepGrid')">Poor under 5 hrs</div>
+          <div class="chip" onclick="selectOne(this,'sleepGrid')">Pain disturbs sleep</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-btns"><button class="btn-next" onclick="goNext(1)">Continue &#8594; Select Body Parts</button></div>
   </div>
 
   <!-- STEP 2 -->
@@ -587,6 +707,96 @@ function showAIError(loadId,bodyId,textId){
   document.getElementById(loadId).style.display='none';
   document.getElementById(bodyId).style.display='block';
   document.getElementById(textId).innerHTML='<p style="color:#E05C5C">⚠️ Could not connect. Please check your internet and try again.</p>';
+}
+
+
+function selectOccType(el, type) {
+  document.querySelectorAll('#occTypeGrid .body-item').forEach(b => {
+    b.classList.remove('selected');
+  });
+  el.classList.add('selected');
+
+  const fields = {
+    desk: [
+      {label:'Do you use a laptop or desktop?', chips:['Laptop only','Desktop only','Both']},
+      {label:'Hours of continuous screen time without break', chips:['Under 1 hr','1-2 hrs','2-4 hrs','4+ hrs']},
+      {label:'Your workstation setup', chips:['Ergonomic chair & desk','Regular chair','Sofa/bed','Floor seating']},
+      {label:'Monitor position', chips:['Eye level','Below eye level','Above eye level','Varies']},
+      {label:'Do you use a mouse & keyboard or touchscreen?', chips:['Mouse & keyboard','Touchscreen only','Both']},
+      {label:'Neck & head position while working', chips:['Head forward posture','Looking down','Neutral','Varies']},
+    ],
+    standing: [
+      {label:'How long do you stand continuously?', chips:['Under 1 hr','1-2 hrs','2-4 hrs','4+ hrs']},
+      {label:'Type of floor surface at work', chips:['Hard floor (concrete/tile)','Carpeted','Anti-fatigue mat','Varies']},
+      {label:'Do you wear supportive footwear at work?', chips:['Yes always','Sometimes','No, flat shoes','Heels/formal shoes']},
+      {label:'Do you carry or lift items regularly?', chips:['Yes, heavy items','Yes, light items','Occasionally','No']},
+      {label:'Counter/surface height at your work', chips:['Too low (bending forward)','Too high (raised arms)','Comfortable height','Varies']},
+    ],
+    physical: [
+      {label:'Type of physical work', chips:['Heavy lifting','Repetitive bending','Overhead work','Crawling/kneeling','Carrying loads','Pushing/pulling']},
+      {label:'Average weight lifted per task', chips:['Under 5 kg','5-15 kg','15-30 kg','30+ kg']},
+      {label:'Lifting technique used', chips:['Proper technique (knees bent)','Back bending','Mixed','Not sure']},
+      {label:'Do you use any protective equipment (back belt, knee pads)?', chips:['Yes always','Sometimes','No']},
+      {label:'Vibration exposure (power tools, heavy machinery)?', chips:['Yes, daily','Occasionally','No']},
+      {label:'Work in awkward postures (twisted, bent, reaching)?', chips:['Yes, frequently','Sometimes','Rarely']},
+    ],
+    driving: [
+      {label:'Hours of driving per day', chips:['Under 2 hrs','2-4 hrs','4-6 hrs','6-8 hrs','8+ hrs']},
+      {label:'Type of vehicle', chips:['Car','Truck/HCV','Two-wheeler','Bus/Auto','Forklift']},
+      {label:'Seat adjustment & lumbar support', chips:['Good lumbar support','No lumbar support','Adjustable (use it)','Never adjusted']},
+      {label:'Vibration felt during driving', chips:['Yes, severe','Moderate','Mild','None']},
+      {label:'Do you load/unload goods?', chips:['Yes, heavy','Yes, light','Occasionally','No']},
+    ],
+    healthcare: [
+      {label:'Your healthcare role', chips:['Doctor','Nurse','Physiotherapist','Lab tech','Ward staff','Surgeon','Other']},
+      {label:'Do you assist patients in transfers (lifting/moving patients)?', chips:['Yes, multiple times daily','Occasionally','Rarely','No']},
+      {label:'Hours on feet per shift', chips:['Under 4 hrs','4-6 hrs','6-8 hrs','8-12 hrs']},
+      {label:'Work with bent/twisted spine frequently?', chips:['Yes, frequently','Sometimes','Rarely']},
+      {label:'Night shifts involved?', chips:['Yes, regular night shifts','Rotating shifts','Day shifts only']},
+      {label:'Use of PPE that restricts movement?', chips:['Yes, heavy PPE','Light PPE','No PPE']},
+    ],
+    student: [
+      {label:'Mode of study', chips:['Mostly sitting (class/library)','Field/practical work','Mix of both']},
+      {label:'Bag weight carried daily', chips:['Light (under 3 kg)','Moderate (3-6 kg)','Heavy (6+ kg)','No bag / digital']},
+      {label:'How do you carry your bag?', chips:['Both shoulders (backpack)','One shoulder','Rolling bag','No bag']},
+      {label:'Study posture at home', chips:['Desk & chair','Bed/floor','Sofa','Mix']},
+      {label:'Screen time per day (phone + laptop)', chips:['Under 3 hrs','3-5 hrs','5-8 hrs','8+ hrs']},
+    ],
+    homemaker: [
+      {label:'Tasks done most frequently', chips:['Cooking (prolonged standing)','Cleaning/mopping','Childcare (lifting kids)','Washing clothes','Grocery carrying','All of the above']},
+      {label:'Kitchen counter height', chips:['Comfortable','Too low (bending)','Too high (reaching)']},
+      {label:'Do you sit on floor for any household work?', chips:['Yes, frequently','Sometimes','No']},
+      {label:'Childcare — lifting/carrying a child?', chips:['Yes, infant (heavy)','Yes, toddler','No children']},
+      {label:'Do you have domestic help for heavy work?', chips:['Yes, full time','Partial help','No help']},
+    ],
+    other: [
+      {label:'Describe your main work activity', chips:['Mostly sitting','Mostly standing','Mix of both','Outdoors/fieldwork','Heavy manual work']},
+      {label:'Any repetitive movements at work?', chips:['Yes, upper limb','Yes, lower limb','Yes, whole body','No']},
+      {label:'Work environment', chips:['Indoor office','Indoor factory','Outdoor','Home-based','Multiple locations']},
+    ]
+  };
+
+  const container = document.getElementById('occDynamicFields');
+  container.innerHTML = '';
+
+  if (!fields[type]) return;
+
+  const header = document.createElement('div');
+  header.style = 'background:var(--gold-l);border:1.5px solid #FFD0A0;border-radius:var(--rs);padding:10px 14px;margin-bottom:14px;font-size:12px;font-weight:700;color:var(--mid);';
+  header.innerHTML = '&#128270; Occupation-specific questions loaded based on your work type';
+  container.appendChild(header);
+
+  fields[type].forEach((q, i) => {
+    const div = document.createElement('div');
+    div.className = 'form-group';
+    const gId = 'dynGrid-' + i;
+    div.innerHTML = '<label class="form-label">' + q.label + '</label><div class="chips-row" id="' + gId + '">' +
+      q.chips.map(c => '<div class="chip" onclick="selectOne(this,\'' + gId + '\')">' + c + '</div>').join('') +
+      '</div>';
+    container.appendChild(div);
+    div.style.opacity = '0'; div.style.transform = 'translateY(8px)';
+    setTimeout(() => { div.style.transition = 'all .3s ease'; div.style.opacity = '1'; div.style.transform = 'translateY(0)'; }, i * 60);
+  });
 }
 
 function selectOne(el,gridId){
