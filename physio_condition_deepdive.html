@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PhysioLearn — Clubfoot Deep Dive</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --cream: #FDF8F2;
+  --warm: #FFFBF5;
+  --peach: #FFE8D6;
+  --coral: #FF7B54;
+  --coral-light: #FF9B76;
+  --teal: #2D9B8A;
+  --teal-light: #E0F5F1;
+  --purple: #7B5EA7;
+  --purple-light: #EDE8F7;
+  --gold: #F2A93B;
+  --gold-light: #FFF3D6;
+  --green: #52B788;
+  --green-light: #E8F7EF;
+  --red: #E05C5C;
+  --red-light: #FDEAEA;
+  --blue: #4A90D9;
+  --blue-light: #EAF3FC;
+  --text-dark: #2C2318;
+  --text-mid: #6B5B4E;
+  --text-light: #A89888;
+  --border: #F0E8DF;
+  --shadow: 0 4px 24px rgba(44,35,24,0.07);
+  --shadow-lg: 0 8px 36px rgba(44,35,24,0.12);
+  --r: 18px;
+  --r-sm: 10px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Nunito',sans-serif; background:var(--cream); color:var(--text-dark); min-height:100vh; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  position:fixed; left:0; top:0; bottom:0; width:220px;
+  background:var(--warm); border-right:1.5px solid var(--border);
+  display:flex; flex-direction:column; padding:24px 0; z-index:100;
+  box-shadow:4px 0 20px rgba(44,35,24,0.04);
+}
+.logo { padding:0 20px 22px; border-bottom:1.5px solid var(--border); margin-bottom:16px; display:flex; align-items:center; gap:9px; }
+.logo-icon { width:34px; height:34px; background:linear-gradient(135deg,var(--coral),var(--coral-light)); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:16px; box-shadow:0 4px 10px rgba(255,123,84,0.3); }
+.logo-text { font-size:15px; font-weight:900; color:var(--text-dark); }
+.logo-text span { color:var(--coral); }
+.nav-item { display:flex; align-items:center; gap:9px; padding:9px 14px; margin:0 8px 2px; border-radius:var(--r-sm); font-size:13px; font-weight:700; color:var(--text-mid); cursor:pointer; transition:all 0.2s; }
+.nav-item:hover { background:var(--peach); color:var(--coral); }
+.nav-item.active { background:linear-gradient(135deg,#FFF0E8,#FFE4D0); color:var(--coral); }
+.nav-section-label { font-size:9px; font-weight:800; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-light); padding:8px 22px 4px; }
+.sidebar-bottom { margin-top:auto; padding:16px 12px 0; border-top:1.5px solid var(--border); }
+.user-pill { display:flex; align-items:center; gap:9px; padding:10px 12px; border-radius:var(--r-sm); background:var(--peach); }
+.avatar { width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--teal),#4DB6A5); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:900; color:white; }
+
+/* ── MAIN ── */
+.main { margin-left:220px; padding:28px 32px; min-height:100vh; }
+
+/* ── BREADCRUMB ── */
+.breadcrumb { display:flex; align-items:center; gap:8px; font-size:12px; font-weight:700; color:var(--text-light); margin-bottom:20px; }
+.breadcrumb span { color:var(--text-mid); cursor:pointer; }
+.breadcrumb span:hover { color:var(--coral); }
+.breadcrumb .sep { color:var(--border); }
+.breadcrumb .current { color:var(--text-dark); }
+
+/* ── HERO ── */
+.hero {
+  background:linear-gradient(135deg, #1A3C40 0%, #2D6A5E 50%, #3A8C7E 100%);
+  border-radius:var(--r); padding:32px 36px; margin-bottom:24px;
+  position:relative; overflow:hidden;
+  box-shadow:0 8px 32px rgba(26,60,64,0.25);
+}
+.hero::before {
+  content:''; position:absolute; right:-40px; top:-40px;
+  width:260px; height:260px; border-radius:50%;
+  background:rgba(255,255,255,0.04);
+}
+.hero::after {
+  content:'🦶'; position:absolute; right:36px; top:50%; transform:translateY(-50%);
+  font-size:90px; opacity:0.12;
+}
+.hero-tag { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.2); border-radius:50px; padding:5px 14px; font-size:11px; font-weight:800; color:rgba(255,255,255,0.85); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:14px; }
+.hero h1 { font-family:'Playfair Display',serif; font-size:32px; color:white; font-weight:700; margin-bottom:6px; }
+.hero h1 em { font-style:italic; color:rgba(255,255,255,0.7); font-size:22px; }
+.hero-desc { font-size:13px; color:rgba(255,255,255,0.75); font-weight:600; max-width:500px; line-height:1.6; margin-bottom:20px; }
+.hero-tags { display:flex; gap:8px; flex-wrap:wrap; }
+.htag { background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:5px 11px; font-size:11px; font-weight:700; color:rgba(255,255,255,0.8); }
+.hero-stats { position:absolute; right:36px; bottom:28px; display:flex; gap:12px; z-index:1; }
+.hstat { background:rgba(255,255,255,0.1); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.2); border-radius:var(--r-sm); padding:10px 16px; text-align:center; }
+.hstat .v { font-size:20px; font-weight:900; color:white; }
+.hstat .l { font-size:10px; color:rgba(255,255,255,0.65); font-weight:700; }
+
+/* ── TABS ── */
+.tabs-bar { display:flex; gap:4px; background:white; border-radius:var(--r); padding:6px; margin-bottom:24px; box-shadow:var(--shadow); border:1.5px solid var(--border); overflow-x:auto; }
+.tab { padding:10px 18px; border-radius:12px; font-size:13px; font-weight:800; color:var(--text-mid); cursor:pointer; transition:all 0.2s; white-space:nowrap; display:flex; align-items:center; gap:7px; }
+.tab:hover { background:var(--peach); color:var(--coral); }
+.tab.active { background:linear-gradient(135deg,var(--coral),var(--coral-light)); color:white; box-shadow:0 4px 12px rgba(255,123,84,0.3); }
+.tab-icon { font-size:14px; }
+
+/* ── CONTENT PANELS ── */
+.panel { display:none; animation:fadeIn 0.3s ease; }
+.panel.active { display:block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── CONTENT GRID ── */
+.content-grid { display:grid; grid-template-columns:1fr 340px; gap:20px; align-items:start; }
+.content-main { display:flex; flex-direction:column; gap:16px; }
+.content-side { display:flex; flex-direction:column; gap:16px; position:sticky; top:20px; }
+
+/* ── SECTION CARD ── */
+.sec-card { background:white; border-radius:var(--r); padding:24px; border:1.5px solid var(--border); box-shadow:var(--shadow); }
+.sec-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px; gap:12px; }
+.sec-title-wrap { display:flex; align-items:center; gap:10px; }
+.sec-icon { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+.sec-title { font-size:15px; font-weight:800; color:var(--text-dark); }
+.sec-subtitle { font-size:11px; color:var(--text-light); font-weight:600; margin-top:2px; }
+
+/* ── EXPLAIN BUTTON ── */
+.explain-btn {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:7px 14px; border-radius:8px;
+  background:var(--purple-light); border:1.5px solid #D4C8EE;
+  font-size:11px; font-weight:800; color:var(--purple);
+  cursor:pointer; transition:all 0.2s; white-space:nowrap;
+}
+.explain-btn:hover { background:var(--purple); color:white; }
+
+/* ── BODY TEXT ── */
+.body-text { font-size:13px; color:var(--text-mid); line-height:1.8; font-weight:600; }
+.body-text strong { color:var(--text-dark); font-weight:800; }
+
+/* ── AI RESPONSE BOX ── */
+.ai-box {
+  margin-top:14px; background:linear-gradient(135deg,#F5F0FF,#EDE8FA);
+  border:1.5px solid #D0C0EE; border-radius:var(--r-sm);
+  padding:16px; display:none;
+}
+.ai-box.visible { display:block; animation:fadeIn 0.4s ease; }
+.ai-box-header { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+.ai-orb { width:28px; height:28px; border-radius:8px; background:linear-gradient(135deg,var(--purple),#A07DD6); display:flex; align-items:center; justify-content:center; font-size:13px; }
+.ai-box-title { font-size:12px; font-weight:800; color:var(--purple); }
+.ai-box-text { font-size:12px; color:var(--text-mid); line-height:1.8; font-weight:600; }
+.ai-box-text strong { color:var(--text-dark); }
+
+/* ── CAUSE GRID ── */
+.cause-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
+.cause-item { padding:14px; border-radius:var(--r-sm); border:1.5px solid; cursor:pointer; transition:all 0.2s; }
+.cause-item:hover { transform:translateY(-2px); box-shadow:var(--shadow); }
+.cause-icon { font-size:22px; margin-bottom:6px; }
+.cause-label { font-size:12px; font-weight:800; margin-bottom:3px; }
+.cause-desc { font-size:11px; font-weight:600; line-height:1.5; }
+
+/* ── DEFORMITY COMPASS ── */
+.deformity-ring { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.def-chip { padding:8px 14px; border-radius:50px; font-size:12px; font-weight:800; display:flex; align-items:center; gap:6px; cursor:pointer; transition:all 0.2s; }
+.def-chip:hover { transform:scale(1.05); }
+
+/* ── MANAGEMENT STEPS ── */
+.steps-list { display:flex; flex-direction:column; gap:0; margin-top:14px; }
+.step-item { display:flex; gap:14px; padding:14px 0; border-bottom:1px solid var(--border); position:relative; }
+.step-item:last-child { border-bottom:none; }
+.step-num { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:900; color:white; flex-shrink:0; margin-top:2px; }
+.step-content {}
+.step-name { font-size:13px; font-weight:800; color:var(--text-dark); margin-bottom:3px; }
+.step-desc { font-size:12px; color:var(--text-mid); font-weight:600; line-height:1.6; }
+.step-tag { display:inline-block; margin-top:5px; padding:3px 8px; border-radius:5px; font-size:10px; font-weight:800; }
+
+/* ── CLINICAL CORRELATION ── */
+.cc-patient-card { background:linear-gradient(135deg,var(--teal-light),#D0EFEA); border:1.5px solid #A8DDD6; border-radius:var(--r-sm); padding:16px; margin-bottom:14px; }
+.cc-patient-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.cc-avatar { width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg,var(--teal),#4DB6A5); display:flex; align-items:center; justify-content:center; font-size:18px; }
+.cc-name { font-size:14px; font-weight:800; color:var(--text-dark); }
+.cc-detail { font-size:11px; color:var(--text-mid); font-weight:600; }
+.cc-findings { display:flex; flex-direction:column; gap:7px; }
+.cc-row { display:flex; align-items:flex-start; gap:8px; }
+.cc-dot { width:7px; height:7px; border-radius:50%; background:var(--teal); margin-top:4px; flex-shrink:0; }
+.cc-text { font-size:12px; color:var(--text-mid); font-weight:600; line-height:1.5; }
+.cc-text strong { color:var(--text-dark); font-weight:800; }
+
+/* ── SPECIAL TESTS ── */
+.test-list { display:flex; flex-direction:column; gap:10px; margin-top:14px; }
+.test-item { padding:14px; border-radius:var(--r-sm); background:var(--warm); border:1.5px solid var(--border); cursor:pointer; transition:all 0.2s; }
+.test-item:hover { border-color:var(--teal); background:var(--teal-light); }
+.test-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:5px; }
+.test-name { font-size:13px; font-weight:800; color:var(--text-dark); }
+.test-badges { display:flex; gap:5px; }
+.badge { padding:2px 8px; border-radius:5px; font-size:10px; font-weight:800; }
+.test-desc { font-size:11px; color:var(--text-mid); font-weight:600; line-height:1.5; }
+
+/* ── SIDEBAR WIDGETS ── */
+.widget { background:white; border-radius:var(--r); padding:20px; border:1.5px solid var(--border); box-shadow:var(--shadow); }
+.widget-title { font-size:13px; font-weight:800; color:var(--text-dark); margin-bottom:14px; display:flex; align-items:center; gap:7px; }
+
+/* ── AI TUTOR WIDGET ── */
+.ai-chat-box { background:linear-gradient(135deg,#F0EBFF,#E8E0FA); border:1.5px solid #D0C0EE; border-radius:var(--r); padding:20px; }
+.ai-chat-title { display:flex; align-items:center; gap:9px; margin-bottom:14px; }
+.ai-chat-orb { width:36px; height:36px; border-radius:11px; background:linear-gradient(135deg,var(--purple),#A07DD6); display:flex; align-items:center; justify-content:center; font-size:16px; box-shadow:0 4px 12px rgba(123,94,167,0.3); animation:glow 2.5s infinite; }
+@keyframes glow { 0%,100%{box-shadow:0 4px 12px rgba(123,94,167,0.3)} 50%{box-shadow:0 4px 20px rgba(123,94,167,0.55)} }
+.ai-chat-name { font-size:13px; font-weight:800; color:var(--text-dark); }
+.ai-chat-status { font-size:10px; color:var(--green); font-weight:700; }
+.chat-messages { display:flex; flex-direction:column; gap:10px; margin-bottom:14px; max-height:220px; overflow-y:auto; }
+.chat-msg { padding:10px 13px; border-radius:12px; font-size:12px; font-weight:600; line-height:1.6; }
+.chat-msg.ai { background:white; color:var(--text-mid); border:1.5px solid var(--border); border-bottom-left-radius:4px; }
+.chat-msg.user { background:linear-gradient(135deg,var(--purple),#9B7DD4); color:white; border-bottom-right-radius:4px; align-self:flex-end; max-width:85%; }
+.chat-input-row { display:flex; gap:8px; }
+.chat-input { flex:1; padding:10px 14px; border-radius:10px; border:1.5px solid #D0C0EE; background:white; font-family:'Nunito',sans-serif; font-size:12px; font-weight:600; color:var(--text-dark); outline:none; }
+.chat-input:focus { border-color:var(--purple); }
+.chat-send { width:36px; height:36px; background:linear-gradient(135deg,var(--purple),#9B7DD4); border:none; border-radius:10px; color:white; font-size:15px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+.chat-send:hover { transform:scale(1.05); }
+
+/* ── PROGRESS WIDGET ── */
+.progress-ring-wrap { display:flex; align-items:center; gap:16px; margin-bottom:14px; }
+.ring-svg { transform:rotate(-90deg); }
+.ring-bg { fill:none; stroke:#F0E8DF; stroke-width:8; }
+.ring-fill { fill:none; stroke:var(--coral); stroke-width:8; stroke-linecap:round; stroke-dasharray:163; stroke-dashoffset:52; transition:stroke-dashoffset 1s ease; }
+.ring-text { font-size:15px; font-weight:900; fill:var(--text-dark); text-anchor:middle; dominant-baseline:middle; transform:rotate(90deg); transform-origin:30px 30px; }
+.progress-labels { flex:1; }
+.prog-label { font-size:11px; font-weight:700; color:var(--text-mid); margin-bottom:4px; }
+.prog-val { font-size:20px; font-weight:900; color:var(--text-dark); }
+.prog-sub { font-size:10px; color:var(--text-light); font-weight:700; }
+.mini-prog-list { display:flex; flex-direction:column; gap:8px; }
+.mini-prog-item { display:flex; align-items:center; gap:10px; }
+.mini-prog-label { font-size:11px; font-weight:700; color:var(--text-mid); width:80px; }
+.mini-prog-bar { flex:1; height:5px; background:#F0E8DF; border-radius:4px; overflow:hidden; }
+.mini-prog-fill { height:100%; border-radius:4px; }
+.mini-prog-pct { font-size:10px; font-weight:800; color:var(--text-light); width:28px; text-align:right; }
+
+/* ── RELATED CONDITIONS ── */
+.related-list { display:flex; flex-direction:column; gap:7px; }
+.related-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:var(--r-sm); border:1.5px solid var(--border); cursor:pointer; transition:all 0.2s; background:var(--warm); }
+.related-item:hover { border-color:var(--coral); background:var(--peach); transform:translateX(3px); }
+.related-icon { font-size:18px; }
+.related-name { font-size:12px; font-weight:800; color:var(--text-dark); }
+.related-sub { font-size:10px; color:var(--text-light); font-weight:600; }
+
+/* ── TOAST ── */
+.toast { position:fixed; bottom:24px; right:24px; background:var(--text-dark); color:white; padding:11px 18px; border-radius:var(--r-sm); font-size:13px; font-weight:700; box-shadow:var(--shadow-lg); transform:translateY(60px); opacity:0; transition:all 0.3s cubic-bezier(.34,1.56,.64,1); z-index:999; }
+.toast.show { transform:translateY(0); opacity:1; }
+
+/* ── LOADING DOTS ── */
+.loading-dots span { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--purple); margin:0 2px; animation:bounce 1.2s infinite; }
+.loading-dots span:nth-child(2) { animation-delay:0.2s; }
+.loading-dots span:nth-child(3) { animation-delay:0.4s; }
+@keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+
+/* fade in stagger */
+.main > * { animation:rise 0.4s ease both; }
+.main > *:nth-child(2){animation-delay:.08s}
+.main > *:nth-child(3){animation-delay:.13s}
+.main > *:nth-child(4){animation-delay:.18s}
+@keyframes rise { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="logo">
+    <div class="logo-icon">🦴</div>
+    <div class="logo-text">Physio<span>Learn</span></div>
+  </div>
+  <div class="nav-section-label">Learning</div>
+  <div class="nav-item" onclick="toast('🏠 Going to Dashboard...')">🏠 &nbsp;Dashboard</div>
+  <div class="nav-item active">📖 &nbsp;My Modules</div>
+  <div class="nav-item" onclick="toast('🧠 Case Simulator opening...')">🧠 &nbsp;Case Simulator</div>
+  <div class="nav-item" onclick="toast('🃏 Flashcards opening...')">🃏 &nbsp;Flashcards</div>
+  <div class="nav-item" onclick="toast('📊 Progress opening...')">📊 &nbsp;My Progress</div>
+  <div class="nav-section-label" style="margin-top:10px">AI Tools</div>
+  <div class="nav-item" onclick="toast('🤖 AI Tutor opening...')">🤖 &nbsp;AI Tutor</div>
+  <div class="nav-item" onclick="toast('🔬 Anatomy Viewer...')">🔬 &nbsp;Anatomy Viewer</div>
+  <div class="sidebar-bottom">
+    <div class="user-pill">
+      <div class="avatar">SA</div>
+      <div><div style="font-size:12px;font-weight:800">Sara Ahmed</div><div style="font-size:10px;color:var(--text-light);font-weight:600">3rd Year · MSc Physio</div></div>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb">
+    <span>Dashboard</span><span class="sep">›</span>
+    <span>Modules</span><span class="sep">›</span>
+    <span>Paediatric Conditions</span><span class="sep">›</span>
+    <span class="current">Clubfoot (CTEV)</span>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">📖 Condition Deep Dive</div>
+    <h1>Clubfoot <em>(Congenital Talipes Equinovarus)</em></h1>
+    <div class="hero-desc">A complex 3D foot deformity present at birth — one of the most common congenital musculoskeletal conditions in physiotherapy practice.</div>
+    <div class="hero-tags">
+      <span class="htag">🦶 Paediatric</span>
+      <span class="htag">🏥 Congenital</span>
+      <span class="htag">📐 Biomechanics</span>
+      <span class="htag">⚕️ Ponseti Method</span>
+      <span class="htag">🧬 Idiopathic</span>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="v">1:1000</div><div class="l">Incidence</div></div>
+      <div class="hstat"><div class="v">2:1</div><div class="l">M : F Ratio</div></div>
+      <div class="hstat"><div class="v">50%</div><div class="l">Bilateral</div></div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs-bar">
+    <div class="tab active" onclick="switchTab('etiology',this)"><span class="tab-icon">🧬</span>Etiology</div>
+    <div class="tab" onclick="switchTab('deformity',this)"><span class="tab-icon">📐</span>Deformity</div>
+    <div class="tab" onclick="switchTab('clinical',this)"><span class="tab-icon">🩺</span>Clinical Picture</div>
+    <div class="tab" onclick="switchTab('management',this)"><span class="tab-icon">⚕️</span>Management</div>
+    <div class="tab" onclick="switchTab('correlation',this)"><span class="tab-icon">🔗</span>Clinical Correlation</div>
+    <div class="tab" onclick="switchTab('tests',this)"><span class="tab-icon">🔬</span>Special Tests</div>
+  </div>
+
+  <!-- ══ PANELS ══ -->
+
+  <!-- ETIOLOGY -->
+  <div class="panel active" id="panel-etiology">
+    <div class="content-grid">
+      <div class="content-main">
+
+        <div class="sec-card">
+          <div class="sec-header">
+            <div class="sec-title-wrap">
+              <div class="sec-icon" style="background:#FFF0E8">🧬</div>
+              <div><div class="sec-title">What Causes Clubfoot?</div><div class="sec-subtitle">Etiology & Risk Factors</div></div>
+            </div>
+            <div class="explain-btn" onclick="showAI('ai-etiology')">✨ Explain Simply</div>
+          </div>
+          <div class="body-text">
+            The exact etiology of <strong>Congenital Talipes Equinovarus (CTEV)</strong> remains multifactorial. Current evidence supports a combination of <strong>genetic predisposition, arrested fetal development, and intrauterine mechanical factors</strong> acting during the critical period of musculoskeletal development (7–8 weeks gestation).
+          </div>
+          <div class="ai-box" id="ai-etiology">
+            <div class="ai-box-header"><div class="ai-orb">✨</div><div class="ai-box-title">AI Simple Explanation</div></div>
+            <div class="ai-box-text">Think of it this way — during early pregnancy, the baby's foot is forming. Clubfoot happens when <strong>something interrupts the normal development process</strong>. It could be genes passed down from parents, the baby's foot getting stuck in an awkward position inside the womb, or the muscles and tendons pulling unevenly. Most of the time (80%), we don't find a single clear cause — we call that <strong>idiopathic</strong>, which just means "we know it happened, but not exactly why." The key thing to understand clinically is: <strong>it's not the parents' fault, and it's very treatable</strong>.</div>
+          </div>
+          <div class="cause-grid">
+            <div class="cause-item" style="background:#FFF5F0;border-color:#FFCBA4" onclick="toast('🧬 Genetic factors — family history increases risk 30x')">
+              <div class="cause-icon">🧬</div>
+              <div class="cause-label" style="color:var(--coral)">Genetic / Hereditary</div>
+              <div class="cause-desc" style="color:var(--text-mid)">Positive family history increases risk 30x. Associated with chromosome 17q23 locus. Autosomal dominant pattern in some families.</div>
+            </div>
+            <div class="cause-item" style="background:#F5F2FF;border-color:#D4C8EE" onclick="toast('🤰 Intrauterine factors — positioning, oligohydramnios')">
+              <div class="cause-icon">🤰</div>
+              <div class="cause-label" style="color:var(--purple)">Intrauterine Factors</div>
+              <div class="cause-desc" style="color:var(--text-mid)">Oligohydramnios, abnormal fetal positioning, and restricted movement in utero compress the developing foot.</div>
+            </div>
+            <div class="cause-item" style="background:var(--teal-light);border-color:#A8DDD6" onclick="toast('🧠 Neuromuscular — muscle imbalance theory')">
+              <div class="cause-icon">🧠</div>
+              <div class="cause-label" style="color:var(--teal)">Neuromuscular Theory</div>
+              <div class="cause-desc" style="color:var(--text-mid)">Imbalance between invertor/evertor muscles leads to abnormal tendon insertion and secondary bone deformity.</div>
+            </div>
+            <div class="cause-item" style="background:var(--gold-light);border-color:var(--peach-deep)" onclick="toast('⏱️ Arrested development — 7-8 weeks gestation')">
+              <div class="cause-icon">⏱️</div>
+              <div class="cause-label" style="color:var(--gold)">Arrested Development</div>
+              <div class="cause-desc" style="color:var(--text-mid)">Normal foot passes through an equinovarus position at 7–8 weeks gestation. Arrest at this stage = clubfoot.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="content-side">
+        <!-- AI TUTOR -->
+        <div class="ai-chat-box">
+          <div class="ai-chat-title">
+            <div class="ai-chat-orb">🤖</div>
+            <div><div class="ai-chat-name">AI Tutor</div><div class="ai-chat-status">● Online — Ask anything about CTEV</div></div>
+          </div>
+          <div class="chat-messages" id="chatMessages">
+            <div class="chat-msg ai">Hi Sara! I'm here to help you understand Clubfoot deeply. What would you like to know? 😊</div>
+          </div>
+          <div class="chat-input-row">
+            <input class="chat-input" id="chatInput" placeholder="Ask about etiology, treatment..." onkeydown="if(event.key==='Enter')sendChat()"/>
+            <button class="chat-send" onclick="sendChat()">→</button>
+          </div>
+        </div>
+        <!-- PROGRESS -->
+        <div class="widget">
+          <div class="widget-title">📊 Module Progress</div>
+          <div class="progress-ring-wrap">
+            <svg width="60" height="60" class="ring-svg" viewBox="0 0 60 60">
+              <circle class="ring-bg" cx="30" cy="30" r="26"/>
+              <circle class="ring-fill" cx="30" cy="30" r="26"/>
+              <text class="ring-text" x="30" y="30">68%</text>
+            </svg>
+            <div class="progress-labels">
+              <div class="prog-label">Overall Completion</div>
+              <div class="prog-val">68%</div>
+              <div class="prog-sub">4 of 6 sections done</div>
+            </div>
+          </div>
+          <div class="mini-prog-list">
+            <div class="mini-prog-item"><span class="mini-prog-label">Etiology</span><div class="mini-prog-bar"><div class="mini-prog-fill" style="width:100%;background:var(--green)"></div></div><span class="mini-prog-pct">✅</span></div>
+            <div class="mini-prog-item"><span class="mini-prog-label">Deformity</span><div class="mini-prog-bar"><div class="mini-prog-fill" style="width:100%;background:var(--green)"></div></div><span class="mini-prog-pct">✅</span></div>
+            <div class="mini-prog-item"><span class="mini-prog-label">Clinical</span><div class="mini-prog-bar"><div class="mini-prog-fill" style="width:60%;background:var(--coral)"></div></div><span class="mini-prog-pct">60%</span></div>
+            <div class="mini-prog-item"><span class="mini-prog-label">Management</span><div class="mini-prog-bar"><div class="mini-prog-fill" style="width:30%;background:var(--gold)"></div></div><span class="mini-prog-pct">30%</span></div>
+            <div class="mini-prog-item"><span class="mini-prog-label">Correlation</span><div class="mini-prog-bar"><div class="mini-prog-fill" style="width:0%;background:var(--text-light)"></div></div><span class="mini-prog-pct">0%</span></div>
+            <div class="mini-prog-item"><span class="mini-prog-label">Tests</span><div class="mini-prog-bar"><div class="mini-prog-fill" style="width:0%;background:var(--text-light)"></div></div><span class="mini-prog-pct">0%</span></div>
+          </div>
+        </div>
+        <!-- RELATED -->
+        <div class="widget">
+          <div class="widget-title">🔗 Related Conditions</div>
+          <div class="related-list">
+            <div class="related-item" onclick="toast('📚 Loading Flatfoot module...')"><span class="related-icon">👣</span><div><div class="related-name">Flatfoot (Pes Planus)</div><div class="related-sub">Arch collapse · Biomechanics</div></div></div>
+            <div class="related-item" onclick="toast('📚 Loading Metatarsus Adductus...')"><span class="related-icon">🦶</span><div><div class="related-name">Metatarsus Adductus</div><div class="related-sub">Forefoot deformity · Differential</div></div></div>
+            <div class="related-item" onclick="toast('📚 Loading Developmental Dysplasia...')"><span class="related-icon">🦴</span><div><div class="related-name">DDH</div><div class="related-sub">Often co-exists with CTEV</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEFORMITY -->
+  <div class="panel" id="panel-deformity">
+    <div class="content-grid">
+      <div class="content-main">
+        <div class="sec-card">
+          <div class="sec-header">
+            <div class="sec-title-wrap">
+              <div class="sec-icon" style="background:#E8F7EF">📐</div>
+              <div><div class="sec-title">The 4-Component Deformity</div><div class="sec-subtitle">Remember: CAVE (Cavus → Adductus → Varus → Equinus)</div></div>
+            </div>
+            <div class="explain-btn" onclick="showAI('ai-deformity')">✨ Explain Simply</div>
+          </div>
+          <div class="body-text">Clubfoot is a <strong>complex 3-dimensional deformity</strong> involving all structures of the foot and ankle. It is best understood using the mnemonic <strong>CAVE</strong>, describing the four components in order from forefoot to hindfoot.</div>
+          <div class="ai-box" id="ai-deformity">
+            <div class="ai-box-header"><div class="ai-orb">✨</div><div class="ai-box-title">AI Simple Explanation</div></div>
+            <div class="ai-box-text">Imagine trying to describe a twisted foot — instead of memorising four separate things, just remember <strong>CAVE</strong>. Start at the front of the foot and work backwards: the arch is too high (Cavus), the front half curves inward like a kidney (Adductus), the heel rolls inward (Varus), and the whole foot points downward like a ballet dancer (Equinus). In your exam, if they show you a clubfoot X-ray or ask you to assess one clinically — <strong>CAVE tells you exactly what to look for and in what order.</strong></div>
+          </div>
+          <div class="deformity-ring">
+            <div class="def-chip" style="background:#FFF0E8;color:var(--coral);border:1.5px solid #FFD0B0" onclick="toast('C — Cavus: High arch, plantarflexion of 1st ray')">🔴 C — Cavus (High Arch)</div>
+            <div class="def-chip" style="background:#EDE8F7;color:var(--purple);border:1.5px solid #D4C8EE" onclick="toast('A — Adductus: Forefoot curves medially')">🟣 A — Adductus (Forefoot)</div>
+            <div class="def-chip" style="background:var(--teal-light);color:var(--teal);border:1.5px solid #A8DDD6" onclick="toast('V — Varus: Heel inverted, supinated')">🟢 V — Varus (Heel)</div>
+            <div class="def-chip" style="background:var(--gold-light);color:#C07D10;border:1.5px solid var(--peach-deep)" onclick="toast('E — Equinus: Plantarflexion, shortened Achilles')">🟡 E — Equinus (Ankle)</div>
+          </div>
+          <div style="margin-top:16px;padding:14px;background:var(--blue-light);border:1.5px solid #C0D8F0;border-radius:var(--r-sm)">
+            <div style="font-size:12px;font-weight:800;color:var(--blue);margin-bottom:6px">💡 Clinical Pearl</div>
+            <div style="font-size:12px;color:var(--text-mid);font-weight:600;line-height:1.7">The deformity is <strong>rigid</strong> in true CTEV — unlike <strong>positional clubfoot</strong> which is flexible and corrects easily with gentle manipulation. This distinction is your first clinical assessment step.</div>
+          </div>
+        </div>
+      </div>
+      <div class="content-side">
+        <div class="ai-chat-box">
+          <div class="ai-chat-title"><div class="ai-chat-orb">🤖</div><div><div class="ai-chat-name">AI Tutor</div><div class="ai-chat-status">● Online</div></div></div>
+          <div class="chat-messages"><div class="chat-msg ai">Try clicking each component in the CAVE mnemonic above! Want me to explain how to differentiate positional vs true clubfoot? 🤔</div></div>
+          <div class="chat-input-row"><input class="chat-input" placeholder="Ask about CAVE, deformity..." onkeydown="if(event.key==='Enter')quickChat(this)"/><button class="chat-send" onclick="quickChat(this.previousElementSibling)">→</button></div>
+        </div>
+        <div class="widget">
+          <div class="widget-title">🧠 Memory Tip</div>
+          <div style="background:var(--gold-light);border:1.5px solid var(--peach-deep);border-radius:var(--r-sm);padding:14px;text-align:center">
+            <div style="font-size:28px;font-weight:900;color:var(--gold);letter-spacing:6px;margin-bottom:8px">C·A·V·E</div>
+            <div style="font-size:11px;color:var(--text-mid);font-weight:700;line-height:1.8"><strong>C</strong>avus → <strong>A</strong>dductus<br/><strong>V</strong>arus → <strong>E</strong>quinus<br/><br/><em style="font-size:10px;color:var(--text-light)">"Think of it as going INTO a cave — front to back, top to bottom"</em></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLINICAL PICTURE -->
+  <div class="panel" id="panel-clinical">
+    <div class="content-grid">
+      <div class="content-main">
+        <div class="sec-card">
+          <div class="sec-header">
+            <div class="sec-title-wrap">
+              <div class="sec-icon" style="background:var(--teal-light)">🩺</div>
+              <div><div class="sec-title">Clinical Presentation</div><div class="sec-subtitle">What you'll see in real practice</div></div>
+            </div>
+            <div class="explain-btn" onclick="showAI('ai-clinical')">✨ Explain Simply</div>
+          </div>
+          <div class="body-text">On clinical examination, the foot presents with a characteristic appearance. <strong>Inspection</strong> reveals a small foot with skin creases on the medial border and posterior heel. The calf is hypoplastic and the foot lies in the classic CAVE position. <strong>Palpation</strong> reveals tight posteromedial structures including the Achilles tendon, tibialis posterior, and FHL.</div>
+          <div class="ai-box" id="ai-clinical">
+            <div class="ai-box-header"><div class="ai-orb">✨</div><div class="ai-box-title">AI Simple Explanation</div></div>
+            <div class="ai-box-text">When a baby with clubfoot is placed in front of you, here's what to look for step by step. <strong>First — look</strong>: the foot points downward and inward, the heel is pulled up, and there are deep skin folds on the inside and back of the foot. The calf muscle on that side is thinner than the other. <strong>Second — feel</strong>: the structures on the inner side (tibialis posterior) and back of the foot (Achilles) feel very tight and rope-like. <strong>Third — move</strong>: you won't be able to bring the foot into a normal position — that rigidity is the key sign separating true CTEV from a postural deformity.</div>
+          </div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-header">
+            <div class="sec-title-wrap">
+              <div class="sec-icon" style="background:var(--red-light)">⚠️</div>
+              <div><div class="sec-title">Pirani Scoring System</div><div class="sec-subtitle">Assess severity — guides treatment planning</div></div>
+            </div>
+            <div class="explain-btn" onclick="toast('✨ Pirani scoring simplified!')">✨ Explain Simply</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px">
+            <div style="padding:14px;border-radius:var(--r-sm);background:#FFF5F2;border:1.5px solid #FFD0C0">
+              <div style="font-size:12px;font-weight:800;color:var(--coral);margin-bottom:8px">Hindfoot Score (0–3)</div>
+              <div style="font-size:11px;color:var(--text-mid);font-weight:600;line-height:1.8">• Posterior crease<br/>• Empty heel<br/>• Rigid equinus</div>
+            </div>
+            <div style="padding:14px;border-radius:var(--r-sm);background:var(--purple-light);border:1.5px solid #D4C8EE">
+              <div style="font-size:12px;font-weight:800;color:var(--purple);margin-bottom:8px">Midfoot Score (0–3)</div>
+              <div style="font-size:11px;color:var(--text-mid);font-weight:600;line-height:1.8">• Medial crease<br/>• Curved lateral border<br/>• Lateral head of talus</div>
+            </div>
+          </div>
+          <div style="margin-top:12px;padding:12px 14px;background:var(--green-light);border:1.5px solid #A8DFC0;border-radius:var(--r-sm)">
+            <span style="font-size:12px;font-weight:800;color:var(--green)">Total Score 0–6: </span>
+            <span style="font-size:12px;font-weight:600;color:var(--text-mid)">Higher score = more severe deformity = more casts needed before tenotomy</span>
+          </div>
+        </div>
+      </div>
+      <div class="content-side">
+        <div class="ai-chat-box">
+          <div class="ai-chat-title"><div class="ai-chat-orb">🤖</div><div><div class="ai-chat-name">AI Tutor</div><div class="ai-chat-status">● Online</div></div></div>
+          <div class="chat-messages"><div class="chat-msg ai">Can you tell me the 3 hindfoot signs in Pirani scoring? Let's test your memory! 💪</div></div>
+          <div class="chat-input-row"><input class="chat-input" placeholder="Type your answer..." onkeydown="if(event.key==='Enter')quickChat(this)"/><button class="chat-send" onclick="quickChat(this.previousElementSibling)">→</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MANAGEMENT -->
+  <div class="panel" id="panel-management">
+    <div class="content-grid">
+      <div class="content-main">
+        <div class="sec-card">
+          <div class="sec-header">
+            <div class="sec-title-wrap">
+              <div class="sec-icon" style="background:var(--green-light)">⚕️</div>
+              <div><div class="sec-title">Ponseti Method — Gold Standard</div><div class="sec-subtitle">95%+ success rate when started early</div></div>
+            </div>
+            <div class="explain-btn" onclick="showAI('ai-management')">✨ Explain Simply</div>
+          </div>
+          <div class="body-text">The <strong>Ponseti technique</strong> is the internationally accepted gold-standard treatment for idiopathic CTEV. It exploits the plasticity of neonatal cartilage and ligamentous tissue to achieve progressive correction through serial manipulation and casting.</div>
+          <div class="ai-box" id="ai-management">
+            <div class="ai-box-header"><div class="ai-orb">✨</div><div class="ai-box-title">AI Simple Explanation</div></div>
+            <div class="ai-box-text">The Ponseti method is brilliant because it works <strong>with the baby's biology</strong>. Newborn cartilage and ligaments are soft and moldable — like warm clay. Each week, the physiotherapist/orthopaedist gently stretches the foot a little further toward normal position and applies a plaster cast to hold it there. After 5–7 weeks, the foot is mostly corrected. The Achilles is still tight though — so a tiny cut is made (tenotomy) to release it. Then comes the most important part that parents often struggle with: the <strong>brace worn 23 hours/day for 3 months, then at night for 4 years</strong>. Skipping the brace is the #1 cause of relapse.</div>
+          </div>
+          <div class="steps-list">
+            <div class="step-item">
+              <div class="step-num" style="background:var(--coral)">1</div>
+              <div class="step-content">
+                <div class="step-name">Serial Manipulation & Casting</div>
+                <div class="step-desc">Weekly gentle manipulation correcting CAVE in sequence (Cavus first, then Adductus/Varus, then Equinus). Above-knee casts applied after each session. Average 5–7 casts required.</div>
+                <div class="step-tag" style="background:var(--peach);color:var(--coral)">⏱ Weeks 1–7</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-num" style="background:var(--purple)">2</div>
+              <div class="step-content">
+                <div class="step-name">Percutaneous Achilles Tenotomy</div>
+                <div class="step-desc">Performed in 90% of cases when equinus remains after casting. Simple office procedure under local anaesthesia. Final cast applied for 3 weeks post-tenotomy.</div>
+                <div class="step-tag" style="background:var(--purple-light);color:var(--purple)">🔪 Minor procedure</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-num" style="background:var(--teal)">3</div>
+              <div class="step-content">
+                <div class="step-name">Foot Abduction Brace (FAB)</div>
+                <div class="step-desc">Denis Browne bar with open-toed shoes at 60–70° external rotation. 23 hr/day for 3 months, then 12–14 hrs/night until age 4–5 years. Compliance is critical.</div>
+                <div class="step-tag" style="background:var(--teal-light);color:var(--teal)">⭐ Most critical step</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-num" style="background:var(--gold)">4</div>
+              <div class="step-content">
+                <div class="step-name">Physiotherapy & Exercises</div>
+                <div class="step-desc">Parent education for stretching, stimulation exercises. Monitoring of gait development, muscle strength, and tibialis anterior activity as child grows.</div>
+                <div class="step-tag" style="background:var(--gold-light);color:#C07D10">👨‍⚕️ Ongoing</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="content-side">
+        <div class="ai-chat-box">
+          <div class="ai-chat-title"><div class="ai-chat-orb">🤖</div><div><div class="ai-chat-name">AI Tutor</div><div class="ai-chat-status">● Online</div></div></div>
+          <div class="chat-messages"><div class="chat-msg ai">Why do you think brace compliance is so critical? What happens if parents stop using the FAB at 6 months? 🤔</div></div>
+          <div class="chat-input-row"><input class="chat-input" placeholder="Think it through..." onkeydown="if(event.key==='Enter')quickChat(this)"/><button class="chat-send" onclick="quickChat(this.previousElementSibling)">→</button></div>
+        </div>
+        <div class="widget">
+          <div class="widget-title">⚠️ Relapse Warning Signs</div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <div style="display:flex;gap:8px;align-items:center;padding:8px 10px;background:var(--red-light);border-radius:8px"><span>🔴</span><span style="font-size:11px;font-weight:700;color:var(--red)">Supination of forefoot returns</span></div>
+            <div style="display:flex;gap:8px;align-items:center;padding:8px 10px;background:var(--red-light);border-radius:8px"><span>🔴</span><span style="font-size:11px;font-weight:700;color:var(--red)">Heel varus reappears</span></div>
+            <div style="display:flex;gap:8px;align-items:center;padding:8px 10px;background:var(--gold-light);border-radius:8px"><span>🟡</span><span style="font-size:11px;font-weight:700;color:#C07D10">Toe walking pattern</span></div>
+            <div style="display:flex;gap:8px;align-items:center;padding:8px 10px;background:var(--gold-light);border-radius:8px"><span>🟡</span><span style="font-size:11px;font-weight:700;color:#C07D10">Dynamic supination on gait</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLINICAL CORRELATION -->
+  <div class="panel" id="panel-correlation">
+    <div class="content-grid">
+      <div class="content-main">
+        <div class="sec-card">
+          <div class="sec-header">
+            <div class="sec-title-wrap">
+              <div class="sec-icon" style="background:var(--teal-light)">🔗</div>
+              <div><div class="sec-title">Meet the Patient — Clinical Correlation</div><div class="sec-subtitle">Theory meets real practice</div></div>
+            </div>
+          </div>
+          <div class="cc-patient-card">
+            <div class="cc-patient-header">
+              <div class="cc-avatar">👶</div>
+              <div><div class="cc-name">Baby Arjun, 6 weeks old</div><div class="cc-detail">Male · Referred by Paediatrician · Right foot</div></div>
+            </div>
+            <div class="body-text" style="margin-bottom:12px">Mother noticed the right foot was turned inward at birth. Antenatal scans were normal. No family history of foot deformity. Normal delivery at 39 weeks. Birth weight 3.2kg.</div>
+          </div>
+          <div class="sec-title" style="margin-bottom:12px">🔍 What You Observe on Examination</div>
+          <div class="cc-findings">
+            <div class="cc-row"><div class="cc-dot"></div><div class="cc-text"><strong>Inspection:</strong> Right foot in equinus, varus, adductus. Deep posterior and medial skin creases. Right calf notably thinner than left.</div></div>
+            <div class="cc-row"><div class="cc-dot"></div><div class="cc-text"><strong>

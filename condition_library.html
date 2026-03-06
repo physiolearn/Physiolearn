@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PhysioLearn — Condition Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --cream:#FDF8F2; --warm:#FFFBF5; --peach:#FFE8D6; --peach2:#FFCBA4;
+  --coral:#FF7B54; --coral-l:#FF9B76;
+  --teal:#2D9B8A; --teal-l:#E0F5F1;
+  --purple:#7B5EA7; --purple-l:#EDE8F7;
+  --gold:#F2A93B; --gold-l:#FFF3D6;
+  --green:#52B788; --green-l:#E8F7EF;
+  --blue:#4A90D9; --blue-l:#EAF3FC;
+  --red:#E05C5C; --red-l:#FDEAEA;
+  --orange:#F07C3A; --orange-l:#FEF0E6;
+  --text:#2C2318; --mid:#6B5B4E; --light:#A89888;
+  --border:#F0E8DF;
+  --sh:0 4px 24px rgba(44,35,24,.07);
+  --sh2:0 8px 36px rgba(44,35,24,.13);
+  --r:18px; --rs:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;}
+
+/* SIDEBAR */
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:220px;background:var(--warm);border-right:1.5px solid var(--border);display:flex;flex-direction:column;padding:24px 0;z-index:200;box-shadow:4px 0 20px rgba(44,35,24,.04);}
+.logo{padding:0 20px 22px;border-bottom:1.5px solid var(--border);margin-bottom:16px;display:flex;align-items:center;gap:9px;}
+.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--coral),var(--coral-l));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 4px 10px rgba(255,123,84,.3);}
+.logo-text{font-size:15px;font-weight:900;color:var(--text);}
+.logo-text span{color:var(--coral);}
+.nlabel{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--light);padding:8px 22px 4px;}
+.ni{display:flex;align-items:center;gap:9px;padding:9px 14px;margin:0 8px 2px;border-radius:var(--rs);font-size:13px;font-weight:700;color:var(--mid);cursor:pointer;transition:all .2s;}
+.ni:hover{background:var(--peach);color:var(--coral);}
+.ni.active{background:linear-gradient(135deg,#FFF0E8,#FFE4D0);color:var(--coral);}
+.sb-bottom{margin-top:auto;padding:16px 12px 0;border-top:1.5px solid var(--border);}
+.user-pill{display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:var(--rs);background:var(--peach);}
+.av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--teal),#4DB6A5);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:white;}
+
+/* MAIN */
+.main{margin-left:220px;padding:28px 32px;min-height:100vh;}
+
+/* HERO SEARCH */
+.search-hero{background:linear-gradient(135deg,#1A3C40 0%,#2D6A5E 50%,#3A8C7E 100%);border-radius:var(--r);padding:36px 40px;margin-bottom:28px;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(26,60,64,.25);}
+.search-hero::before{content:'';position:absolute;right:-60px;top:-60px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.04);}
+.search-hero::after{content:'📚';position:absolute;right:40px;top:50%;transform:translateY(-50%);font-size:80px;opacity:.1;}
+.sh-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:50px;padding:5px 14px;font-size:11px;font-weight:800;color:rgba(255,255,255,.85);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;}
+.search-hero h1{font-family:'Playfair Display',serif;font-size:30px;color:white;font-weight:700;margin-bottom:6px;}
+.search-hero p{font-size:13px;color:rgba(255,255,255,.7);font-weight:600;margin-bottom:22px;}
+.search-bar{display:flex;align-items:center;gap:12px;background:white;border-radius:50px;padding:12px 20px;max-width:560px;box-shadow:0 4px 20px rgba(0,0,0,.15);}
+.search-bar input{flex:1;border:none;outline:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--text);}
+.search-bar input::placeholder{color:var(--light);}
+.search-btn{background:linear-gradient(135deg,var(--coral),var(--coral-l));color:white;border:none;border-radius:50px;padding:8px 20px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.search-btn:hover{transform:scale(1.04);}
+.search-stats{display:flex;gap:20px;margin-top:18px;}
+.sstat{color:rgba(255,255,255,.8);font-size:12px;font-weight:700;display:flex;align-items:center;gap:5px;}
+
+/* SYSTEM CARDS */
+.section-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:600;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.section-title::after{content:'';flex:1;height:1.5px;background:linear-gradient(to right,var(--border),transparent);}
+.systems-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px;}
+.sys-card{background:white;border-radius:var(--r);padding:20px;border:1.5px solid var(--border);cursor:pointer;transition:all .25s;box-shadow:var(--sh);position:relative;overflow:hidden;}
+.sys-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:var(--r) var(--r) 0 0;}
+.sys-card:hover{transform:translateY(-4px);box-shadow:var(--sh2);}
+.sys-card.selected{border-width:2px;}
+.sys-emoji{font-size:28px;margin-bottom:10px;}
+.sys-name{font-size:14px;font-weight:800;color:var(--text);margin-bottom:3px;}
+.sys-count{font-size:11px;font-weight:700;color:var(--light);}
+.sys-bar{height:4px;background:#F0E8DF;border-radius:4px;margin-top:12px;overflow:hidden;}
+.sys-fill{height:100%;border-radius:4px;}
+.sys-pct{font-size:10px;font-weight:800;margin-top:4px;}
+
+/* FILTER ROW */
+.filter-row{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.filter-chip{padding:8px 16px;border-radius:50px;font-size:12px;font-weight:800;border:1.5px solid var(--border);cursor:pointer;transition:all .2s;background:white;color:var(--mid);}
+.filter-chip:hover{border-color:var(--coral);color:var(--coral);}
+.filter-chip.active{background:linear-gradient(135deg,var(--coral),var(--coral-l));color:white;border-color:transparent;box-shadow:0 3px 10px rgba(255,123,84,.3);}
+.results-count{margin-left:auto;font-size:12px;font-weight:700;color:var(--light);}
+
+/* CONDITIONS GRID */
+.conditions-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px;}
+.cond-card{background:white;border-radius:var(--r);padding:18px;border:1.5px solid var(--border);cursor:pointer;transition:all .25s;box-shadow:var(--sh);}
+.cond-card:hover{transform:translateY(-3px);box-shadow:var(--sh2);border-color:var(--coral);}
+.cond-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
+.cond-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.cond-status{font-size:10px;font-weight:800;padding:3px 8px;border-radius:5px;}
+.cond-name{font-size:13px;font-weight:800;color:var(--text);margin-bottom:3px;}
+.cond-sys{font-size:11px;font-weight:600;color:var(--light);margin-bottom:8px;}
+.cond-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
+.ctag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;}
+.cond-prog{height:4px;background:#F0E8DF;border-radius:4px;overflow:hidden;}
+.cond-prog-fill{height:100%;border-radius:4px;transition:width .8s ease;}
+.cond-footer{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
+.cond-pct{font-size:10px;font-weight:800;color:var(--light);}
+.cond-arrow{font-size:14px;color:var(--light);transition:all .2s;}
+.cond-card:hover .cond-arrow{color:var(--coral);transform:translateX(3px);}
+
+/* DEEP DIVE MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(44,35,24,.5);backdrop-filter:blur(6px);z-index:300;display:none;align-items:flex-start;justify-content:center;padding:24px;overflow-y:auto;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--cream);border-radius:24px;width:100%;max-width:900px;min-height:80vh;box-shadow:0 20px 60px rgba(44,35,24,.25);animation:slideUp .35s cubic-bezier(.34,1.26,.64,1);}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.modal-header{background:linear-gradient(135deg,#1A3C40,#2D6A5E,#3A8C7E);border-radius:24px 24px 0 0;padding:28px 32px;position:relative;overflow:hidden;}
+.modal-header::after{content:'';position:absolute;right:-30px;top:-30px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.05);}
+.modal-close{position:absolute;top:16px;right:16px;width:34px;height:34px;background:rgba(255,255,255,.15);border:none;border-radius:10px;color:white;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:1;}
+.modal-close:hover{background:rgba(255,255,255,.3);}
+.modal-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:50px;padding:4px 12px;font-size:10px;font-weight:800;color:rgba(255,255,255,.85);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;}
+.modal-title{font-family:'Playfair Display',serif;font-size:26px;color:white;font-weight:700;margin-bottom:5px;}
+.modal-sub{font-size:12px;color:rgba(255,255,255,.7);font-weight:600;}
+.modal-tabs{display:flex;gap:4px;padding:16px 20px;background:white;border-bottom:1.5px solid var(--border);overflow-x:auto;}
+.mt{padding:9px 16px;border-radius:10px;font-size:12px;font-weight:800;color:var(--mid);cursor:pointer;transition:all .2s;white-space:nowrap;}
+.mt:hover{background:var(--peach);color:var(--coral);}
+.mt.active{background:linear-gradient(135deg,var(--coral),var(--coral-l));color:white;box-shadow:0 3px 10px rgba(255,123,84,.3);}
+.modal-body{padding:28px 32px;}
+.mpanel{display:none;}
+.mpanel.active{display:block;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* AI CONTENT */
+.ai-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:16px;}
+.ai-spinner{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--purple),#A07DD6);display:flex;align-items:center;justify-content:center;font-size:22px;animation:spin .8s linear infinite;}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.ai-loading-text{font-size:14px;font-weight:700;color:var(--mid);}
+.ai-loading-sub{font-size:12px;font-weight:600;color:var(--light);}
+.ai-content{font-size:13px;color:var(--mid);line-height:1.9;font-weight:600;}
+.ai-content h3{font-size:15px;font-weight:800;color:var(--text);margin:18px 0 8px;display:flex;align-items:center;gap:8px;}
+.ai-content h3:first-child{margin-top:0;}
+.ai-content strong{color:var(--text);font-weight:800;}
+.ai-content ul{padding-left:20px;margin:8px 0;}
+.ai-content ul li{margin-bottom:5px;}
+.ai-content .highlight-box{background:var(--teal-l);border:1.5px solid #A8DDD6;border-radius:var(--rs);padding:14px;margin:14px 0;}
+.ai-content .highlight-box strong{color:var(--teal);}
+.ai-content .warning-box{background:var(--gold-l);border:1.5px solid var(--peach2);border-radius:var(--rs);padding:14px;margin:14px 0;}
+.ai-content .mnemonic{background:linear-gradient(135deg,var(--purple-l),#E0D8F5);border:1.5px solid #D0C0EE;border-radius:var(--rs);padding:16px;margin:14px 0;text-align:center;}
+.ai-content .mnemonic .big{font-size:24px;font-weight:900;color:var(--purple);letter-spacing:6px;margin-bottom:6px;}
+.ai-content .mnemonic .small{font-size:11px;color:var(--mid);font-weight:700;}
+.explain-simple-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;background:var(--purple-l);border:1.5px solid #D4C8EE;font-size:12px;font-weight:800;color:var(--purple);cursor:pointer;transition:all .2s;margin:12px 0;}
+.explain-simple-btn:hover{background:var(--purple);color:white;}
+
+/* ASK AI ROW */
+.ask-ai-row{display:flex;gap:10px;margin-top:20px;padding-top:20px;border-top:1.5px solid var(--border);}
+.ask-input{flex:1;padding:11px 16px;border-radius:12px;border:1.5px solid #D4C8EE;background:white;font-family:'Nunito',sans-serif;font-size:13px;font-weight:600;color:var(--text);outline:none;}
+.ask-input:focus{border-color:var(--purple);}
+.ask-btn{padding:11px 20px;border-radius:12px;background:linear-gradient(135deg,var(--purple),#9B7DD4);color:white;border:none;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;}
+.ask-btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(123,94,167,.35);}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:white;padding:11px 18px;border-radius:var(--rs);font-size:13px;font-weight:700;box-shadow:var(--sh2);transform:translateY(60px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);z-index:999;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* NO RESULTS */
+.no-results{text-align:center;padding:60px 20px;color:var(--light);}
+.no-results .big{font-size:48px;margin-bottom:12px;}
+.no-results p{font-size:14px;font-weight:700;}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="logo"><div class="logo-icon">🦴</div><div class="logo-text">Physio<span>Learn</span></div></div>
+  <div class="nlabel">Learning</div>
+  <div class="ni" onclick="showToast('🏠 Dashboard')">🏠 &nbsp;Dashboard</div>
+  <div class="ni active">📖 &nbsp;Condition Library</div>
+  <div class="ni" onclick="showToast('🧠 Case Simulator')">🧠 &nbsp;Case Simulator</div>
+  <div class="ni" onclick="showToast('🃏 Flashcards')">🃏 &nbsp;Flashcards</div>
+  <div class="ni" onclick="showToast('📊 My Progress')">📊 &nbsp;My Progress</div>
+  <div class="nlabel" style="margin-top:10px">AI Tools</div>
+  <div class="ni" onclick="showToast('🤖 AI Tutor')">🤖 &nbsp;AI Tutor</div>
+  <div class="ni" onclick="showToast('🔬 Anatomy Viewer')">🔬 &nbsp;Anatomy Viewer</div>
+  <div class="sb-bottom">
+    <div class="user-pill">
+      <div class="av">SA</div>
+      <div><div style="font-size:12px;font-weight:800">Sara Ahmed</div><div style="font-size:10px;color:var(--light);font-weight:600">3rd Year · MSc Physio</div></div>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HERO SEARCH -->
+  <div class="search-hero">
+    <div class="sh-tag">📚 Full Syllabus</div>
+    <h1>Condition Library</h1>
+    <p>Every condition in your physiotherapy syllabus — AI-powered deep dives, instant clinical correlations</p>
+    <div class="search-bar">
+      <span style="font-size:18px">🔍</span>
+      <input id="searchInput" type="text" placeholder="Search any condition — Frozen Shoulder, ACL Tear, COPD..." oninput="handleSearch(this.value)"/>
+      <button class="search-btn" onclick="handleSearch(document.getElementById('searchInput').value)">Search</button>
+    </div>
+    <div class="search-stats">
+      <div class="sstat">🦴 <span id="totalCount">0</span> conditions</div>
+      <div class="sstat">📖 6 systems</div>
+      <div class="sstat">✅ AI deep dive on every condition</div>
+    </div>
+  </div>
+
+  <!-- SYSTEMS -->
+  <div class="section-title">Browse by System</div>
+  <div class="systems-grid" id="systemsGrid"></div>
+
+  <!-- FILTER ROW -->
+  <div class="filter-row" id="filterRow">
+    <div class="filter-chip active" onclick="filterBy('all',this)">All Conditions</div>
+    <div class="filter-chip" onclick="filterBy('not-started',this)">Not Started</div>
+    <div class="filter-chip" onclick="filterBy('in-progress',this)">In Progress</div>
+    <div class="filter-chip" onclick="filterBy('complete',this)">Completed</div>
+    <div class="results-count" id="resultsCount"></div>
+  </div>
+
+  <!-- CONDITIONS GRID -->
+  <div class="conditions-grid" id="conditionsGrid"></div>
+  <div class="no-results" id="noResults" style="display:none">
+    <div class="big">🔍</div>
+    <p>No conditions found. Try a different search term.</p>
+  </div>
+
+</main>
+
+<!-- DEEP DIVE MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-tag" id="modalTag">📖 Deep Dive</div>
+      <div class="modal-title" id="modalTitle">Loading...</div>
+      <div class="modal-sub" id="modalSub"></div>
+    </div>
+    <div class="modal-tabs">
+      <div class="mt active" onclick="switchModalTab('overview',this)">🧬 Overview & Etiology</div>
+      <div class="mt" onclick="switchModalTab('clinical',this)">🩺 Clinical Picture</div>
+      <div class="mt" onclick="switchModalTab('management',this)">⚕️ Management</div>
+      <div class="mt" onclick="switchModalTab('correlation',this)">🔗 Clinical Correlation</div>
+      <div class="mt" onclick="switchModalTab('tests',this)">🔬 Special Tests</div>
+    </div>
+    <div class="modal-body">
+      <div class="mpanel active" id="mp-overview"></div>
+      <div class="mpanel" id="mp-clinical"></div>
+      <div class="mpanel" id="mp-management"></div>
+      <div class="mpanel" id="mp-correlation"></div>
+      <div class="mpanel" id="mp-tests"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────
+const SYSTEMS = [
+  { id:'msk', name:'Musculoskeletal', emoji:'🦴', color:'var(--coral)', light:'#FFF0E8', border:'#FFCBA4', prog:72 },
+  { id:'neuro', name:'Neurological', emoji:'🧠', color:'var(--purple)', light:'var(--purple-l)', border:'#D4C8EE', prog:45 },
+  { id:'paeds', name:'Paediatric', emoji:'👶', color:'var(--gold)', light:'var(--gold-l)', border:'#FFD0C0', prog:60 },
+  { id:'cardio', name:'Cardiopulmonary', emoji:'❤️', color:'var(--red)', light:'var(--red-l)', border:'#F0AAAA', prog:30 },
+  { id:'sports', name:'Sports & Ortho', emoji:'🏃', color:'var(--green)', light:'var(--green-l)', border:'#A8DFC0', prog:55 },
+  { id:'womens', name:"Women's & Geriatrics", emoji:'🌸', color:'var(--blue)', light:'var(--blue-l)', border:'#A0C8EE', prog:20 },
+];
+
+const CONDITIONS = [
+  // MSK
+  {id:'frozen-shoulder',name:'Frozen Shoulder',aka:'Adhesive Capsulitis',sys:'msk',sysName:'Musculoskeletal',emoji:'💪',tags:['Shoulder','Capsule','Stages'],prog:85,status:'complete',color:'var(--coral)',light:'#FFF0E8'},
+  {id:'rotator-cuff',name:'Rotator Cuff Tear',aka:'Supraspinatus Rupture',sys:'msk',sysName:'Musculoskeletal',emoji:'🔄',tags:['Shoulder','Tendon','Surgery'],prog:60,status:'in-progress',color:'var(--coral)',light:'#FFF0E8'},
+  {id:'acl-tear',name:'ACL Tear',aka:'Anterior Cruciate Ligament Injury',sys:'msk',sysName:'Musculoskeletal',emoji:'🦵',tags:['Knee','Ligament','Sports'],prog:40,status:'in-progress',color:'var(--coral)',light:'#FFF0E8'},
+  {id:'tennis-elbow',name:'Tennis Elbow',aka:'Lateral Epicondylitis',sys:'msk',sysName:'Musculoskeletal',emoji:'🎾',tags:['Elbow','Tendon','Overuse'],prog:0,status:'not-started',color:'var(--coral)',light:'#FFF0E8'},
+  {id:'plantar-fasciitis',name:'Plantar Fasciitis',aka:'Heel Pain Syndrome',sys:'msk',sysName:'Musculoskeletal',emoji:'👣',tags:['Foot','Fascia','Heel'],prog:0,status:'not-started',color:'var(--coral)',light:'#FFF0E8'},
+  {id:'lumbar-disc',name:'Lumbar Disc Prolapse',aka:'PIVD / Slipped Disc',sys:'msk',sysName:'Musculoskeletal',emoji:'🦴',tags:['Spine','Disc','Radiculopathy'],prog:20,status:'in-progress',color:'var(--coral)',light:'#FFF0E8'},
+  {id:'oa-knee',name:'Osteoarthritis Knee',aka:'Degenerative Joint Disease',sys:'msk',sysName:'Musculoskeletal',emoji:'🦿',tags:['Knee','Cartilage','Elderly'],prog:100,status:'complete',color:'var(--coral)',light:'#FFF0E8'},
+  {id:'carpal-tunnel',name:'Carpal Tunnel Syndrome',aka:'Median Nerve Compression',sys:'msk',sysName:'Musculoskeletal',emoji:'🤝',tags:['Wrist','Nerve','Compression'],prog:0,status:'not-started',color:'var(--coral)',light:'#FFF0E8'},
+  {id:'shoulder-impingement',name:'Shoulder Impingement',aka:'Subacromial Impingement',sys:'msk',sysName:'Musculoskeletal',emoji:'⚡',tags:['Shoulder','Bursa','Arc'],prog:55,status:'in-progress',color:'var(--coral)',light:'#FFF0E8'},
+
+  // NEURO
+  {id:'stroke',name:'Stroke Rehabilitation',aka:'CVA / Hemiplegia',sys:'neuro',sysName:'Neurological',emoji:'🧠',tags:['CVA','Hemiplegia','ADL'],prog:70,status:'in-progress',color:'var(--purple)',light:'var(--purple-l)'},
+  {id:'parkinsons',name:"Parkinson's Disease",aka:'PD Rehabilitation',sys:'neuro',sysName:'Neurological',emoji:'🌀',tags:['Tremor','Rigidity','Balance'],prog:30,status:'in-progress',color:'var(--purple)',light:'var(--purple-l)'},
+  {id:'ms',name:'Multiple Sclerosis',aka:'MS Rehabilitation',sys:'neuro',sysName:'Neurological',emoji:'⚡',tags:['Demyelination','Fatigue','Balance'],prog:0,status:'not-started',color:'var(--purple)',light:'var(--purple-l)'},
+  {id:'gbs',name:'Guillain-Barré Syndrome',aka:'GBS / AIDP',sys:'neuro',sysName:'Neurological',emoji:'🔋',tags:['Ascending','Flaccid','ICU'],prog:0,status:'not-started',color:'var(--purple)',light:'var(--purple-l)'},
+  {id:'sci',name:'Spinal Cord Injury',aka:'SCI / Paraplegia / Tetraplegia',sys:'neuro',sysName:'Neurological',emoji:'🦽',tags:['ASIA','Paraplegia','Rehab'],prog:45,status:'in-progress',color:'var(--purple)',light:'var(--purple-l)'},
+  {id:'bells-palsy',name:"Bell's Palsy",aka:'Idiopathic Facial Nerve Palsy',sys:'neuro',sysName:'Neurological',emoji:'😶',tags:['Facial','CN VII','Nerve'],prog:90,status:'complete',color:'var(--purple)',light:'var(--purple-l)'},
+
+  // PAEDS
+  {id:'clubfoot',name:'Clubfoot (CTEV)',aka:'Congenital Talipes Equinovarus',sys:'paeds',sysName:'Paediatric',emoji:'🦶',tags:['Congenital','CAVE','Ponseti'],prog:68,status:'in-progress',color:'var(--gold)',light:'var(--gold-l)'},
+  {id:'cp',name:'Cerebral Palsy',aka:'CP Rehabilitation',sys:'paeds',sysName:'Paediatric',emoji:'👧',tags:['GMFCS','Spastic','NDT'],prog:50,status:'in-progress',color:'var(--gold)',light:'var(--gold-l)'},
+  {id:'erbs-palsy',name:"Erb's Palsy",aka:'Brachial Plexus Birth Palsy',sys:'paeds',sysName:'Paediatric',emoji:'💪',tags:['C5-C6','Brachial','Birth'],prog:0,status:'not-started',color:'var(--gold)',light:'var(--gold-l)'},
+  {id:'scoliosis',name:'Scoliosis',aka:'Idiopathic Spinal Curvature',sys:'paeds',sysName:'Paediatric',emoji:'〰️',tags:['Cobb Angle','Bracing','AIS'],prog:35,status:'in-progress',color:'var(--gold)',light:'var(--gold-l)'},
+  {id:'ddh',name:'Developmental Dysplasia Hip',aka:'DDH / Congenital Hip Dislocation',sys:'paeds',sysName:'Paediatric',emoji:'🦴',tags:['Ortolani','Barlow','Hip'],prog:0,status:'not-started',color:'var(--gold)',light:'var(--gold-l)'},
+
+  // CARDIO
+  {id:'copd',name:'COPD Rehabilitation',aka:'Chronic Obstructive Pulmonary Disease',sys:'cardio',sysName:'Cardiopulmonary',emoji:'🫁',tags:['Dyspnea','Exercise','Spirometry'],prog:20,status:'in-progress',color:'var(--red)',light:'var(--red-l)'},
+  {id:'asthma',name:'Asthma Management',aka:'Bronchial Asthma',sys:'cardio',sysName:'Cardiopulmonary',emoji:'💨',tags:['Wheeze','Inhaler','Peak Flow'],prog:0,status:'not-started',color:'var(--red)',light:'var(--red-l)'},
+  {id:'cardiac-rehab',name:'Cardiac Rehabilitation',aka:'Post-MI / Post-CABG',sys:'cardio',sysName:'Cardiopulmonary',emoji:'❤️',tags:['Post-MI','Phase 1-4','Exercise'],prog:0,status:'not-started',color:'var(--red)',light:'var(--red-l)'},
+
+  // SPORTS
+  {id:'hamstring-strain',name:'Hamstring Strain',aka:'Posterior Thigh Muscle Injury',sys:'sports',sysName:'Sports & Ortho',emoji:'🏃',tags:['Grade 1-3','Return to Sport','Eccentric'],prog:75,status:'in-progress',color:'var(--green)',light:'var(--green-l)'},
+  {id:'ankle-sprain',name:'Ankle Sprain',aka:'Lateral Ligament Injury',sys:'sports',sysName:'Sports & Ortho',emoji:'🦶',tags:['ATFL','Ottawa','RICE'],prog:100,status:'complete',color:'var(--green)',light:'var(--green-l)'},
+  {id:'tkr-rehab',name:'Total Knee Replacement',aka:'TKR Post-op Rehabilitation',sys:'sports',sysName:'Sports & Ortho',emoji:'🦿',tags:['Post-op','Protocol','Gait'],prog:0,status:'not-started',color:'var(--green)',light:'var(--green-l)'},
+
+  // WOMEN'S
+  {id:'pelvic-floor',name:'Pelvic Floor Dysfunction',aka:'Urinary Incontinence / Prolapse',sys:'womens',sysName:"Women's & Geriatrics",emoji:'🌸',tags:['Kegel','Incontinence','Prolapse'],prog:0,status:'not-started',color:'var(--blue)',light:'var(--blue-l)'},
+  {id:'osteoporosis',name:'Osteoporosis',aka:'Low Bone Density Management',sys:'womens',sysName:"Women's & Geriatrics",emoji:'🦴',tags:['DEXA','Falls','Weight-bearing'],prog:15,status:'in-progress',color:'var(--blue)',light:'var(--blue-l)'},
+];
+
+// ── STATE ──
+let currentFilter = 'all';
+let currentSearch = '';
+let currentCondition = null;
+let currentTab = 'overview';
+let generatedContent = {};
+let toastTimer;
+
+// ── INIT ──
+function init() {
+  document.getElementById('totalCount').textContent = CONDITIONS.length;
+  renderSystems();
+  renderConditions();
+}
+
+// ── SYSTEMS ──
+function renderSystems() {
+  const grid = document.getElementById('systemsGrid');
+  grid.innerHTML = SYSTEMS.map(s => {
+    const count = CONDITIONS.filter(c => c.sys === s.id).length;
+    const done = CONDITIONS.filter(c => c.sys === s.id && c.status === 'complete').length;
+    return `<div class="sys-card" onclick="filterBySystem('${s.id}')" style="border-color:${s.border}">
+      <div style="position:absolute;top:0;left:0;right:0;height:4px;border-radius:var(--r) var(--r) 0 0;background:${s.color}"></div>
+      <div class="sys-emoji">${s.emoji}</div>
+      <div class="sys-name">${s.name}</div>
+      <div class="sys-count">${count} conditions · ${done} completed</div>
+      <div class="sys-bar"><div class="sys-fill" style="width:${s.prog}%;background:${s.color}"></div></div>
+      <div class="sys-pct" style="color:${s.color}">${s.prog}% mastery</div>
+    </div>`;
+  }).join('');
+}
+
+function filterBySystem(sysId) {
+  currentSearch = '';
+  document.getElementById('searchInput').value = '';
+  const chips = document.querySelectorAll('.filter-chip');
+  chips.forEach(c => c.classList.remove('active'));
+  chips[0].classList.add('active');
+  currentFilter = 'all';
+  const filtered = CONDITIONS.filter(c => c.sys === sysId);
+  renderConditionCards(filtered);
+  showToast(`${SYSTEMS.find(s=>s.id===sysId).emoji} Showing ${SYSTEMS.find(s=>s.id===sysId).name} conditions`);
+}
+
+// ── CONDITIONS ──
+function renderConditions() {
+  let list = CONDITIONS;
+  if (currentSearch) list = list.filter(c => c.name.toLowerCase().includes(currentSearch) || c.aka.toLowerCase().includes(currentSearch) || c.tags.some(t=>t.toLowerCase().includes(currentSearch)));
+  if (currentFilter !== 'all') list = list.filter(c => c.status === currentFilter);
+  renderConditionCards(list);
+}
+
+function renderConditionCards(list) {
+  const grid = document.getElementById('conditionsGrid');
+  const none = document.getElementById('noResults');
+  document.getElementById('resultsCount').textContent = `${list.length} conditions`;
+  if (!list.length) { grid.innerHTML=''; none.style.display='block'; return; }
+  none.style.display='none';
+  grid.innerHTML = list.map(c => {
+    const statusLabel = c.status==='complete'?'✅ Complete':c.status==='in-progress'?'📖 In Progress':'🔒 Not Started';
+    const statusBg = c.status==='complete'?'var(--green-l)':c.status==='in-progress'?'var(--gold-l)':'#F5F0FF';
+    const statusCol = c.status==='complete'?'var(--green)':c.status==='in-progress'?'var(--gold)':'var(--purple)';
+    return `<div class="cond-card" onclick="openCondition('${c.id}')">
+      <div class="cond-header">
+        <div class="cond-icon" style="background:${c.light}">${c.emoji}</div>
+        <div class="cond-status" style="background:${statusBg};color:${statusCol}">${statusLabel}</div>
+      </div>
+      <div class="cond-name">${c.name}</div>
+      <div class="cond-sys">${c.emoji} ${c.sysName}</div>
+      <div class="cond-tags">${c.tags.map(t=>`<span class="ctag" style="background:${c.light};color:${c.color}">${t}</span>`).join('')}</div>
+      <div class="cond-prog"><div class="cond-prog-fill" style="width:${c.prog}%;background:${c.color}"></div></div>
+      <div class="cond-footer">
+        <div class="cond-pct">${c.prog}% complete</div>
+        <div class="cond-arrow">→</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function handleSearch(val) {
+  currentSearch = val.toLowerCase().trim();
+  renderConditions();
+}
+
+function filterBy(type, el) {
+  currentFilter = type;
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  currentSearch = '';
+  document.getElementById('searchInput').value = '';
+  renderConditions();
+}
+
+// ── MODAL ──
+function openCondition(id) {
+  currentCondition = CONDITIONS.find(c=>c.id===id);
+  if(!currentCondition) return;
+  generatedContent = {};
+  document.getElementById('modalTitle').textContent = currentCondition.name;
+  document.getElementById('modalSub').textContent = currentCondition.aka + ' · ' + currentCondition.sysName;
+  document.getElementById('modalTag').textContent = `${currentCondition.emoji} Deep Dive`;
+  document.querySelectorAll('.mt').forEach((t,i)=>t.classList.toggle('active',i===0));
+  document.querySelectorAll('.mpanel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('mp-overview').classList.add('active');
+  currentTab = 'overview';
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  loadTabContent('overview');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function closeModalOutside(e) {
+  if(e.target===document.getElementById('modalOverlay')) closeModal();
+}
+
+function switchModalTab(tab, el) {
+  currentTab = tab;
+  document.querySelectorAll('.mt').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.mpanel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('mp-'+tab).classList.add('active');
+  loadTabContent(tab);
+}
+
+// ── AI CONTENT ──
+function loadTabContent(tab) {
+  const key = currentCondition.id + '-' + tab;
+  if(generatedContent[key]) return; // already loaded
+  const panel = document.getElementById('mp-'+tab);
+  panel.innerHTML = `<div class="ai-loading">
+    <div class="ai-spinner">✨</div>
+    <div class="ai-loading-text">AI is generating your ${tab} content...</div>
+    <div class="ai-loading-sub">Pulling from physiotherapy knowledge base</div>
+  </div>`;
+  generateContent(tab, panel, key);
+}
+
+async function generateContent(tab, panel, key) {
+  const prompts = {
+    overview: `You are an expert physiotherapy educator. Generate a deep dive overview for the condition: "${currentCondition.name} (${currentCondition.aka})".
+
+Include these sections with clear headings:
+1. **Definition & Overview** — what it is, brief epidemiology
+2. **Etiology & Risk Factors** — causes, predisposing factors  
+3. **Pathomechanics** — what happens inside the body
+4. **Key Memory Aid** — a mnemonic or memory trick if applicable
+
+Format rules:
+- Use **bold** for key terms
+- Keep language clear but clinically accurate (textbook level)
+- Add a "Clinical Pearl" highlight box at the end
+- Total length: 350-450 words
+- Do NOT use markdown headers with #, use plain text section names followed by a colon`,
+
+    clinical: `You are an expert physiotherapy educator. Generate the clinical picture for: "${currentCondition.name}".
+
+Include:
+1. **Signs & Symptoms** — what the patient presents with
+2. **On Examination** — inspection, palpation, movement findings
+3. **Relevant Grading/Classification** — any scoring system used clinically
+4. **Differential Diagnosis** — 3 conditions to rule out
+
+Keep it concise, clinically focused, textbook accurate. 300-400 words. No markdown # headers.`,
+
+    management: `You are an expert physiotherapy educator. Generate a physiotherapy management plan for: "${currentCondition.name}".
+
+Include:
+1. **Goals of Management** — short and long term
+2. **Phase 1 — Acute Management** — first 1-2 weeks
+3. **Phase 2 — Sub-acute / Rehabilitation** — progressive exercises
+4. **Phase 3 — Return to Function** — functional goals
+5. **Key Physiotherapy Interventions** — specific techniques, modalities
+6. **Red Flags / Precautions** — when to refer or stop
+
+300-400 words. Clear, practical, evidence-based. No markdown # headers.`,
+
+    correlation: `You are an expert physiotherapy educator. Create a clinical correlation case for: "${currentCondition.name}".
+
+Format:
+- Create a realistic patient (name, age, occupation, presenting complaint)
+- History of present illness — how they present
+- Key examination findings — what you would find
+- How the theory maps to this real patient (connect textbook to clinic)
+- What the management plan would look like for this specific patient
+- One key learning point for students
+
+Make it feel like a real patient encounter. 300-400 words. No markdown # headers.`,
+
+    tests: `You are an expert physiotherapy educator. List the special tests used for: "${currentCondition.name}".
+
+For each test include:
+- Test name and what it tests for
+- How to perform it (patient position, examiner action)
+- Positive sign — what constitutes a positive result
+- Sensitivity and specificity if known
+
+List 4-6 most clinically relevant tests. Format as clear numbered entries. 300-400 words. No markdown # headers.`
+  };
+
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        messages: [{ role: "user", content: prompts[tab] }]
+      })
+    });
+    const data = await response.json();
+    const text = data.content?.map(b=>b.text||'').join('') || 'Unable to load content.';
+    generatedContent[key] = text;
+    renderAIContent(panel, text, tab);
+  } catch(err) {
+    panel.innerHTML = `<div class="ai-content"><p style="color:var(--red)">⚠️ Could not load AI content. Please check your connection and try again.</p></div>`;
+  }
+}
+
+function renderAIContent(panel, text, tab) {
+  // Format the text nicely
+  let html = text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/^(\d+\.\s)/gm, '<br><strong>$1</strong>')
+    .split('\n').filter(l=>l.trim()).map(line => {
+      if(line.includes('Clinical Pearl') || line.includes('Key Point') || line.includes('Remember:')) {
+        return `<div class="highlight-box"><strong>💡 ${line}</strong></div>`;
+      }
+      if(line.includes('Warning') || line.includes('Red Flag') || line.includes('Caution')) {
+        return `<div class="warning-box">⚠️ ${line}</div>`;
+      }
+      return `<p style="margin-bottom:8px">${line}</p>`;
+    }).join('');
+
+  panel.innerHTML = `
+    <div class="ai-content">${html}</div>
+    <div class="ask-ai-row">
+      <input class="ask-input" placeholder="Ask a follow-up question about ${currentCondition.name}..." onkeydown="if(event.key==='Enter')askFollowUp(this,this.nextElementSibling)"/>
+      <button class="ask-btn" onclick="askFollowUp(this.previousElementSibling,this)">Ask AI ✨</button>
+    </div>`;
+}
+
+async function askFollowUp(input, btn) {
+  const q = input.value.trim();
+  if(!q) return;
+  const orig = btn.textContent;
+  btn.textContent = '...';
+  btn.disabled = true;
+  input.disabled = true;
+
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        messages: [{
+          role: "user",
+          content: `You are a physiotherapy educator. The student is studying "${currentCondition.name}" and asks: "${q}". Give a concise, clear, clinically accurate answer in 2-4 sentences. Use plain text, no markdown headers.`
+        }]
+      })
+    });
+    const data = await response.json();
+    const answer = data.content?.map(b=>b.text||'').join('') || 'Unable to get answer.';
+    const panel = document.getElementById('mp-'+currentTab);
+    const aiContent = panel.querySelector('.ai-content');
+    const newBlock = document.createElement('div');
+    newBlock.style.cssText = 'margin-top:16px;padding:14px;background:var(--purple-l);border:1.5px solid #D4C8EE;border-radius:var(--rs)';
+    newBlock.innerHTML = `<div style="font-size:11px;font-weight:800;color:var(--purple);margin-bottom:6px">💬 Your question: ${q}</div><div style="font-size:13px;font-weight:600;color:var(--mid);line-height:1.8">${answer}</div>`;
+    aiContent.appendChild(newBlock);
+    input.value = '';
+    showToast('✨ AI answered your question!');
+  } catch(e) {
+    showToast('⚠️ Could not get answer. Try again.');
+  }
+  btn.textContent = orig;
+  btn.disabled = false;
+  input.disabled = false;
+}
+
+// ── UTILS ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 2500);
+}
+
+// Fix the template literal issue with CSS variable
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
