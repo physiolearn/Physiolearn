@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>PhysioLearn — Welcome</title>
+<title>PhysioLearn — Sign In</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --cream:#FDF8F2;--warm:#FFFBF5;--peach:#FFE8D6;
-  --coral:#FF7B54;--coral-l:#FF9B76;--coral-d:#E5623B;
+  --cream:#FDF8F2;--warm:#FFFBF5;--peach:#FFE8D6;--peach2:#FFCBA4;
+  --coral:#FF7B54;--coral-l:#FF9B76;
   --teal:#2D9B8A;--teal-l:#E0F5F1;
   --purple:#7B5EA7;--purple-l:#EDE8F7;
   --gold:#F2A93B;--gold-l:#FFF3D6;
@@ -20,305 +20,325 @@
   --r:20px;--rs:12px;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{
-  font-family:'Nunito',sans-serif;
-  min-height:100vh;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  background:var(--cream);
-  color:var(--text);
-  overflow-x:hidden;
-}
+body{font-family:'Nunito',sans-serif;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:var(--cream);color:var(--text);}
 
-/* ── LEFT PANEL ── */
-.left{
-  background:linear-gradient(160deg,#1A3C40 0%,#2D6A5E 45%,#3A8C7E 100%);
-  display:flex;flex-direction:column;
-  justify-content:space-between;
-  padding:40px;
-  position:relative;overflow:hidden;
-  min-height:100vh;
-}
+/* LEFT */
+.left{background:linear-gradient(160deg,#1A3C40,#2D6A5E 50%,#3A8C7E);display:flex;flex-direction:column;justify-content:space-between;padding:40px;position:relative;overflow:hidden;min-height:100vh;}
 .left::before{content:'';position:absolute;right:-80px;top:-80px;width:350px;height:350px;border-radius:50%;background:rgba(255,255,255,.04);}
-.left::after{content:'';position:absolute;left:-60px;bottom:-60px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,.03);}
 .left-logo{display:flex;align-items:center;gap:10px;z-index:1;}
-.left-logo-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--coral),var(--coral-l));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 14px rgba(255,123,84,.35);}
-.left-logo-text{font-size:18px;font-weight:900;color:white;}
-.left-logo-text span{color:var(--coral-l);}
+.logo-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--coral),var(--coral-l));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.logo-text{font-size:18px;font-weight:900;color:white;}
+.logo-text span{color:var(--coral-l);}
 .left-content{z-index:1;}
 .left-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:50px;padding:6px 14px;font-size:11px;font-weight:800;color:rgba(255,255,255,.8);letter-spacing:.08em;text-transform:uppercase;margin-bottom:18px;}
-.left-title{font-family:'Playfair Display',serif;font-size:clamp(28px,3.5vw,42px);color:white;font-weight:700;line-height:1.2;margin-bottom:14px;}
+.left-title{font-family:'Playfair Display',serif;font-size:clamp(26px,3vw,40px);color:white;font-weight:700;line-height:1.25;margin-bottom:14px;}
 .left-title em{color:var(--coral-l);font-style:italic;}
-.left-desc{font-size:14px;color:rgba(255,255,255,.7);font-weight:600;line-height:1.7;margin-bottom:32px;max-width:380px;}
-.persona-showcase{display:flex;flex-direction:column;gap:10px;}
-.ps-item{display:flex;align-items:center;gap:12px;padding:14px 18px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:var(--rs);backdrop-filter:blur(4px);transition:all .25s;cursor:default;}
-.ps-item:hover{background:rgba(255,255,255,.18);}
-.ps-icon{font-size:22px;}
-.ps-info{}
+.left-desc{font-size:13px;color:rgba(255,255,255,.7);font-weight:600;line-height:1.7;margin-bottom:28px;}
+.ps-item{display:flex;align-items:center;gap:12px;padding:13px 16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:var(--rs);margin-bottom:8px;}
+.ps-icon{font-size:20px;}
 .ps-name{font-size:13px;font-weight:800;color:white;}
 .ps-desc{font-size:11px;color:rgba(255,255,255,.6);font-weight:600;}
-.left-bottom{font-size:11px;color:rgba(255,255,255,.35);font-weight:600;z-index:1;}
+.left-foot{font-size:11px;color:rgba(255,255,255,.3);font-weight:600;z-index:1;}
 
-/* ── RIGHT PANEL ── */
-.right{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:40px 48px;
-  background:var(--warm);
-  min-height:100vh;
-  overflow-y:auto;
-}
-.right-inner{width:100%;max-width:400px;}
+/* RIGHT */
+.right{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:40px 48px;background:var(--warm);min-height:100vh;overflow-y:auto;}
+.right-inner{width:100%;max-width:420px;padding:20px 0;}
 
 /* TABS */
-.auth-tabs{display:flex;gap:4px;background:var(--cream);border-radius:var(--rs);padding:4px;margin-bottom:28px;border:1.5px solid var(--border);}
-.auth-tab{flex:1;padding:10px;text-align:center;border-radius:9px;font-size:14px;font-weight:800;color:var(--light);cursor:pointer;transition:all .2s;}
-.auth-tab.active{background:white;color:var(--text);box-shadow:var(--sh);}
+.tabs{display:flex;gap:4px;background:var(--cream);border-radius:var(--rs);padding:4px;margin-bottom:28px;border:1.5px solid var(--border);}
+.tab{flex:1;padding:10px;text-align:center;border-radius:9px;font-size:14px;font-weight:800;color:var(--light);cursor:pointer;transition:all .2s;}
+.tab.active{background:white;color:var(--text);box-shadow:var(--sh);}
 
-/* WELCOME */
-.welcome-text{margin-bottom:24px;}
-.welcome-text h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--text);margin-bottom:5px;}
-.welcome-text p{font-size:13px;color:var(--light);font-weight:600;}
+/* PANEL */
+.panel{display:none;}
+.panel.active{display:block;}
 
-/* PERSONA SELECTOR */
-.persona-label{font-size:12px;font-weight:800;color:var(--mid);margin-bottom:10px;display:block;}
-.persona-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;}
-.persona-opt{
-  padding:14px 12px;border-radius:var(--rs);
-  border:2px solid var(--border);
-  cursor:pointer;transition:all .2s;
-  text-align:center;background:white;
-}
-.persona-opt:hover{border-color:var(--coral);transform:translateY(-1px);}
-.persona-opt.selected{border-color:var(--coral);background:var(--peach);}
-.persona-opt .po-icon{font-size:24px;margin-bottom:5px;}
-.persona-opt .po-name{font-size:12px;font-weight:800;color:var(--text);}
-.persona-opt .po-desc{font-size:10px;font-weight:600;color:var(--light);margin-top:2px;}
-
-/* FORM */
-.form-group{margin-bottom:16px;}
+/* FORM ELEMENTS */
+.form-group{margin-bottom:14px;}
 .form-label{font-size:12px;font-weight:800;color:var(--mid);display:block;margin-bottom:6px;}
-.form-input{
-  width:100%;padding:13px 16px;
-  border-radius:var(--rs);border:1.5px solid var(--border);
-  background:white;font-family:'Nunito',sans-serif;
-  font-size:13px;font-weight:600;color:var(--text);
-  outline:none;transition:border-color .2s;
-}
-.form-input:focus{border-color:var(--coral);}
+.req{color:var(--coral);}
+.form-input,.form-select{width:100%;padding:13px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:white;font-family:'Nunito',sans-serif;font-size:13px;font-weight:600;color:var(--text);outline:none;transition:border-color .2s;}
+.form-input:focus,.form-select:focus{border-color:var(--coral);}
 .form-input::placeholder{color:var(--light);}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-
-/* PASSWORD TOGGLE */
+.form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23A89888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .input-wrap{position:relative;}
 .input-wrap .form-input{padding-right:44px;}
 .eye-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;color:var(--light);}
-
-/* FORGOT */
-.forgot{text-align:right;margin-top:-8px;margin-bottom:16px;}
+.forgot{text-align:right;margin-top:-6px;margin-bottom:14px;}
 .forgot a{font-size:12px;font-weight:700;color:var(--coral);text-decoration:none;}
 
-/* SUBMIT BTN */
-.submit-btn{
-  width:100%;padding:15px;border-radius:50px;
-  background:linear-gradient(135deg,var(--coral),var(--coral-l));
-  color:white;font-family:'Nunito',sans-serif;
-  font-size:15px;font-weight:800;border:none;
-  cursor:pointer;transition:all .25s;
-  box-shadow:0 6px 20px rgba(255,123,84,.3);
-  margin-bottom:16px;
-}
-.submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(255,123,84,.4);}
-.submit-btn:active{transform:translateY(0);}
-.submit-btn.loading{opacity:.7;cursor:not-allowed;}
+/* PERSONA GRID */
+.persona-label{font-size:12px;font-weight:800;color:var(--mid);display:block;margin-bottom:8px;}
+.persona-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;}
+.p-opt{padding:13px 10px;border-radius:var(--rs);border:2px solid var(--border);cursor:pointer;transition:all .2s;text-align:center;background:white;}
+.p-opt:hover{border-color:var(--coral);transform:translateY(-1px);}
+.p-opt.selected{border-color:var(--coral);background:var(--peach);}
+.p-opt .po-icon{font-size:22px;margin-bottom:4px;}
+.p-opt .po-name{font-size:12px;font-weight:800;color:var(--text);}
+.p-opt .po-sub{font-size:10px;font-weight:600;color:var(--light);margin-top:2px;}
 
-/* DIVIDER */
-.divider{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+/* CHIPS */
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;}
+.chip{padding:7px 13px;border-radius:50px;border:1.5px solid var(--border);font-size:11px;font-weight:700;color:var(--mid);cursor:pointer;transition:all .2s;background:white;display:inline-block;}
+.chip:hover{border-color:var(--coral);color:var(--coral);}
+.chip.on{background:var(--peach);border-color:var(--coral);color:var(--coral);}
+
+/* SECTION CARD */
+.s-card{background:white;border-radius:var(--r);border:1.5px solid var(--border);padding:18px;margin-bottom:14px;box-shadow:var(--sh);}
+.s-card-title{font-size:13px;font-weight:800;color:var(--text);margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.s-card-sub{font-size:11px;color:var(--light);font-weight:600;margin-bottom:14px;line-height:1.5;}
+.hidden{display:none;}
+
+/* SECTION HEADER BADGE */
+.sec-badge{display:inline-flex;align-items:center;gap:6px;background:var(--gold-l);border:1.5px solid #FFD0A0;border-radius:var(--rs);padding:8px 14px;margin-bottom:14px;font-size:11px;font-weight:800;color:var(--mid);}
+
+/* PROG GRID */
+.prog-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.prog-opt{padding:14px 10px;border-radius:var(--rs);border:2px solid var(--border);cursor:pointer;transition:all .2s;text-align:center;background:white;}
+.prog-opt:hover{border-color:var(--teal);}
+.prog-opt.selected{border-color:var(--teal);background:var(--teal-l);}
+.prog-opt .pr-icon{font-size:22px;margin-bottom:5px;}
+.prog-opt .pr-name{font-size:13px;font-weight:800;color:var(--text);}
+.prog-opt .pr-sub{font-size:10px;font-weight:600;color:var(--light);margin-top:2px;}
+
+/* SPEC GRID */
+.spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.spec-opt{padding:12px 8px;border-radius:var(--rs);border:2px solid var(--border);cursor:pointer;transition:all .2s;text-align:center;background:white;}
+.spec-opt:hover{border-color:var(--purple);}
+.spec-opt.selected{border-color:var(--purple);background:var(--purple-l);}
+.spec-opt .sp-icon{font-size:20px;margin-bottom:4px;}
+.spec-opt .sp-name{font-size:11px;font-weight:800;color:var(--text);}
+
+/* SUBMIT */
+.submit-btn{width:100%;padding:15px;border-radius:50px;background:linear-gradient(135deg,var(--coral),var(--coral-l));color:white;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;border:none;cursor:pointer;transition:all .25s;box-shadow:0 6px 20px rgba(255,123,84,.3);margin-bottom:14px;margin-top:4px;}
+.submit-btn:hover{transform:translateY(-2px);}
+.submit-btn.loading{opacity:.7;cursor:not-allowed;}
+.switch-text{text-align:center;font-size:13px;font-weight:600;color:var(--light);}
+.switch-text a{color:var(--coral);font-weight:800;cursor:pointer;}
+.divider{display:flex;align-items:center;gap:12px;margin:14px 0;}
 .divider::before,.divider::after{content:'';flex:1;height:1.5px;background:var(--border);}
 .divider span{font-size:11px;font-weight:700;color:var(--light);}
+.section-title{font-size:11px;font-weight:800;color:var(--mid);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em;}
 
-/* SOCIAL */
-.social-btn{
-  width:100%;padding:13px;border-radius:50px;
-  background:white;border:1.5px solid var(--border);
-  font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;
-  color:var(--mid);cursor:pointer;transition:all .2s;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  margin-bottom:10px;
-}
-.social-btn:hover{border-color:var(--coral);color:var(--coral);}
-
-/* SWITCH */
-.switch-text{text-align:center;font-size:13px;font-weight:600;color:var(--light);}
-.switch-text a{color:var(--coral);font-weight:800;text-decoration:none;}
-
-/* SUCCESS STATE */
-.success-state{
-  display:none;flex-direction:column;align-items:center;
-  text-align:center;padding:20px 0;
-}
-.success-state.visible{display:flex;}
-.success-orb{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--green),#6FD4A0);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:20px;box-shadow:0 8px 24px rgba(82,183,136,.3);animation:popIn .4s cubic-bezier(.34,1.56,.64,1);}
-@keyframes popIn{from{transform:scale(0)}to{transform:scale(1)}}
-.success-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--text);margin-bottom:8px;}
-.success-sub{font-size:13px;color:var(--light);font-weight:600;margin-bottom:24px;line-height:1.6;}
-.success-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:50px;background:linear-gradient(135deg,var(--coral),var(--coral-l));color:white;font-size:14px;font-weight:800;text-decoration:none;box-shadow:0 6px 20px rgba(255,123,84,.3);transition:all .25s;}
-.success-btn:hover{transform:translateY(-2px);}
+/* SUCCESS */
+.success-wrap{display:none;flex-direction:column;align-items:center;text-align:center;padding:20px 0;}
+.success-wrap.show{display:flex;}
+.suc-orb{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--green),#6FD4A0);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:20px;box-shadow:0 8px 24px rgba(82,183,136,.3);animation:pop .4s cubic-bezier(.34,1.56,.64,1);}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+.suc-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.suc-sub{font-size:13px;color:var(--light);font-weight:600;margin-bottom:24px;line-height:1.6;}
+.suc-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:50px;background:linear-gradient(135deg,var(--coral),var(--coral-l));color:white;font-size:14px;font-weight:800;text-decoration:none;box-shadow:0 6px 20px rgba(255,123,84,.3);transition:all .25s;}
+.suc-btn:hover{transform:translateY(-2px);}
 
 /* TOAST */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--text);color:white;padding:11px 20px;border-radius:var(--rs);font-size:13px;font-weight:700;box-shadow:var(--sh2);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);z-index:999;white-space:nowrap;}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 
-/* MOBILE */
-@media(max-width:768px){
-  body{grid-template-columns:1fr;grid-template-rows:auto 1fr;}
-  .left{min-height:auto;padding:28px 24px 32px;}
-  .persona-showcase{display:none;}
-  .left-content{margin-bottom:0;}
-  .left-title{font-size:26px;}
-  .left-desc{display:none;}
-  .right{padding:28px 24px;min-height:auto;}
-  .form-row{grid-template-columns:1fr;}
+@media(max-width:700px){
+  body{grid-template-columns:1fr;}
+  .left{display:none;}
+  .right{padding:28px 20px;}
 }
-@media(max-width:480px){
-  .persona-grid{grid-template-columns:1fr 1fr;}
-}
-
-/* ANIMATIONS */
-.form-panel{animation:fadeIn .3s ease;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
 
-<!-- LEFT -->
+<!-- LEFT PANEL -->
 <div class="left">
   <div class="left-logo">
-    <div class="left-logo-icon">🦴</div>
-    <div class="left-logo-text">Physio<span>Learn</span></div>
+    <div class="logo-icon">🦴</div>
+    <div class="logo-text">Physio<span>Learn</span></div>
   </div>
   <div class="left-content">
     <div class="left-tag">✨ AI-Powered Platform</div>
-    <div class="left-title">Your Physio<br/><em>Journey</em> Starts Here</div>
-    <div class="left-desc">One platform for patients recovering, students learning, therapists treating, and teachers inspiring.</div>
-    <div class="persona-showcase">
-      <div class="ps-item"><div class="ps-icon">👤</div><div class="ps-info"><div class="ps-name">Patients</div><div class="ps-desc">Gamified sessions · AI-guided recovery</div></div></div>
-      <div class="ps-item"><div class="ps-icon">🎓</div><div class="ps-info"><div class="ps-name">Students</div><div class="ps-desc">AI textbook · Clinical correlations</div></div></div>
-      <div class="ps-item"><div class="ps-icon">🩺</div><div class="ps-info"><div class="ps-name">Therapists</div><div class="ps-desc">Special test recommender · Differentials</div></div></div>
-      <div class="ps-item"><div class="ps-icon">👩‍🏫</div><div class="ps-info"><div class="ps-name">Teachers</div><div class="ps-desc">Case studies · Lecture enhancement</div></div></div>
-    </div>
+    <div class="left-title">One platform for<br><em>every physio journey</em></div>
+    <div class="left-desc">Whether you're recovering, studying, treating, or teaching — PhysioLearn has everything you need in one place.</div>
+    <div class="ps-item"><div class="ps-icon">👤</div><div><div class="ps-name">Patient</div><div class="ps-desc">Gamified sessions · AI guidance · Recovery tracking</div></div></div>
+    <div class="ps-item"><div class="ps-icon">🎓</div><div><div class="ps-name">Student</div><div class="ps-desc">AI tutor · Case simulator · Subject-wise modules</div></div></div>
+    <div class="ps-item"><div class="ps-icon">🩺</div><div><div class="ps-name">Therapist</div><div class="ps-desc">Differential diagnosis · Special tests · Clinical tools</div></div></div>
+    <div class="ps-item"><div class="ps-icon">👩‍🏫</div><div><div class="ps-name">Teacher</div><div class="ps-desc">Rich examples · Lecture companion · Resource library</div></div></div>
   </div>
-  <div class="left-bottom">© 2026 PhysioLearn · Free to use</div>
+  <div class="left-foot">© 2025 PhysioLearn · physiolearn.github.io/Physiolearn</div>
 </div>
 
-<!-- RIGHT -->
+<!-- RIGHT PANEL -->
 <div class="right">
   <div class="right-inner">
 
     <!-- TABS -->
-    <div class="auth-tabs">
-      <div class="auth-tab active" id="tab-login" onclick="switchTab('login')">Sign In</div>
-      <div class="auth-tab" id="tab-signup" onclick="switchTab('signup')">Create Account</div>
+    <div class="tabs">
+      <div class="tab active" id="tab-login" onclick="switchTab('login')">Sign In</div>
+      <div class="tab" id="tab-signup" onclick="switchTab('signup')">Create Account</div>
     </div>
 
-    <!-- LOGIN PANEL -->
-    <div id="panel-login" class="form-panel">
-      <div class="welcome-text">
-        <h2>Welcome back 👋</h2>
-        <p>Sign in to continue your learning journey</p>
+    <!-- ── LOGIN PANEL ── -->
+    <div class="panel active" id="panel-login">
+      <div style="margin-bottom:22px;">
+        <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--text);margin-bottom:4px;">Welcome back 👋</div>
+        <div style="font-size:13px;color:var(--light);font-weight:600;">Sign in to continue your journey</div>
       </div>
-
       <div class="form-group">
         <label class="form-label">Email Address</label>
-        <input class="form-input" type="email" placeholder="sara@example.com" id="login-email"/>
+        <input class="form-input" type="email" placeholder="you@example.com" id="login-email"/>
       </div>
       <div class="form-group">
         <label class="form-label">Password</label>
         <div class="input-wrap">
-          <input class="form-input" type="password" placeholder="Enter your password" id="login-password"/>
-          <button class="eye-btn" onclick="togglePassword('login-password',this)">👁</button>
+          <input class="form-input" type="password" placeholder="Your password" id="login-password"/>
+          <button class="eye-btn" onclick="togglePwd('login-password',this)">👁</button>
         </div>
       </div>
       <div class="forgot"><a href="#">Forgot password?</a></div>
-
       <button class="submit-btn" onclick="handleLogin()">Sign In →</button>
-
-      <div class="divider"><span>or continue with</span></div>
-      <button class="social-btn" onclick="showToast('🔜 Google sign-in coming soon!')">🌐 Continue with Google</button>
-
-      <div class="switch-text">Don't have an account? <a onclick="switchTab('signup')" style="cursor:pointer">Sign up free</a></div>
+      <div class="switch-text">Don't have an account? <a onclick="switchTab('signup')">Create one</a></div>
     </div>
 
-    <!-- SIGNUP PANEL -->
-    <div id="panel-signup" class="form-panel" style="display:none">
-      <div class="welcome-text">
-        <h2>Join PhysioLearn 🎉</h2>
-        <p>Create your free account in 30 seconds</p>
+    <!-- ── SIGNUP PANEL ── -->
+    <div class="panel" id="panel-signup">
+      <div style="margin-bottom:22px;">
+        <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--text);margin-bottom:4px;">Create your account</div>
+        <div style="font-size:13px;color:var(--light);font-weight:600;">Join thousands on their physio journey</div>
       </div>
 
-      <!-- PERSONA SELECT -->
-      <label class="persona-label">I am a...</label>
-      <div class="persona-grid" id="personaGrid">
-        <div class="persona-opt" onclick="selectPersona(this,'patient')">
-          <div class="po-icon">👤</div>
-          <div class="po-name">Patient</div>
-          <div class="po-desc">Recovery & exercises</div>
-        </div>
-        <div class="persona-opt selected" onclick="selectPersona(this,'student')">
-          <div class="po-icon">🎓</div>
-          <div class="po-name">Student</div>
-          <div class="po-desc">Study & learn</div>
-        </div>
-        <div class="persona-opt" onclick="selectPersona(this,'therapist')">
-          <div class="po-icon">🩺</div>
-          <div class="po-name">Therapist</div>
-          <div class="po-desc">Clinical support</div>
-        </div>
-        <div class="persona-opt" onclick="selectPersona(this,'teacher')">
-          <div class="po-icon">👩‍🏫</div>
-          <div class="po-name">Teacher</div>
-          <div class="po-desc">Teaching tools</div>
-        </div>
-      </div>
-
+      <!-- BASIC INFO -->
       <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">First Name</label>
-          <input class="form-input" type="text" placeholder="Sara" id="signup-fname"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Last Name</label>
-          <input class="form-input" type="text" placeholder="Ahmed" id="signup-lname"/>
-        </div>
+        <div class="form-group"><label class="form-label">First Name <span class="req">*</span></label><input class="form-input" type="text" placeholder="Your name" id="signup-fname"/></div>
+        <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" type="text" placeholder="Optional" id="signup-lname"/></div>
       </div>
+      <div class="form-group"><label class="form-label">Email <span class="req">*</span></label><input class="form-input" type="email" placeholder="you@example.com" id="signup-email"/></div>
       <div class="form-group">
-        <label class="form-label">Email Address</label>
-        <input class="form-input" type="email" placeholder="sara@example.com" id="signup-email"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Password</label>
+        <label class="form-label">Password <span class="req">*</span></label>
         <div class="input-wrap">
-          <input class="form-input" type="password" placeholder="Create a strong password" id="signup-password"/>
-          <button class="eye-btn" onclick="togglePassword('signup-password',this)">👁</button>
+          <input class="form-input" type="password" placeholder="At least 6 characters" id="signup-password"/>
+          <button class="eye-btn" onclick="togglePwd('signup-password',this)">👁</button>
         </div>
       </div>
 
-      <!-- DYNAMIC FIELD -->
-      <div class="form-group" id="dynamic-field">
-        <label class="form-label" id="dynamic-label">University / Institution</label>
-        <input class="form-input" type="text" placeholder="e.g. AIIMS, KMC, University of Mumbai" id="dynamic-input"/>
+      <div class="divider"><span>I am a...</span></div>
+
+      <!-- PERSONA -->
+      <div class="persona-grid" id="personaGrid">
+        <div class="p-opt selected" id="popt-patient" onclick="pickPersona('patient')">
+          <div class="po-icon">👤</div><div class="po-name">Patient</div><div class="po-sub">Recovering</div>
+        </div>
+        <div class="p-opt" id="popt-student" onclick="pickPersona('student')">
+          <div class="po-icon">🎓</div><div class="po-name">Student</div><div class="po-sub">BPT / MPT / PhD</div>
+        </div>
+        <div class="p-opt" id="popt-therapist" onclick="pickPersona('therapist')">
+          <div class="po-icon">🩺</div><div class="po-name">Therapist</div><div class="po-sub">Practicing PT</div>
+        </div>
+        <div class="p-opt" id="popt-teacher" onclick="pickPersona('teacher')">
+          <div class="po-icon">👩‍🏫</div><div class="po-name">Teacher</div><div class="po-sub">Educator</div>
+        </div>
       </div>
 
-      <button class="submit-btn" onclick="handleSignup()" id="signup-btn">Create Account →</button>
+      <!-- NON-STUDENT EXTRA FIELD -->
+      <div id="field-other">
+        <div class="form-group">
+          <label class="form-label" id="other-label">Chief Complaint</label>
+          <input class="form-input" type="text" placeholder="e.g. Lower back pain, Knee injury" id="other-input"/>
+        </div>
+      </div>
 
-      <div class="switch-text">Already have an account? <a onclick="switchTab('login')" style="cursor:pointer">Sign in</a></div>
+      <!-- ══ STUDENT SECTION ══ -->
+      <div id="field-student" class="hidden">
+
+        <!-- University & College -->
+        <div class="s-card">
+          <div class="s-card-title">🏛️ Academic Details</div>
+          <div class="s-card-sub">Helps us personalise your study modules and clinical content</div>
+          <div class="form-group">
+            <label class="form-label">University / Affiliated University <span class="req">*</span></label>
+            <input class="form-input" type="text" placeholder="e.g. Maharashtra University of Health Sciences, Manipal..." id="stu-univ"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">College Name <span class="req">*</span></label>
+            <input class="form-input" type="text" placeholder="e.g. MGM College of Physiotherapy, VIMS, KIMS..." id="stu-college"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">City / Campus Location</label>
+            <input class="form-input" type="text" placeholder="e.g. Aurangabad, Manipal, Pune..." id="stu-city"/>
+          </div>
+        </div>
+
+        <!-- Programme -->
+        <div class="s-card">
+          <div class="s-card-title">🎓 Programme</div>
+          <div class="s-card-sub">Select your current programme</div>
+          <div class="prog-grid" id="progGrid">
+            <div class="prog-opt" onclick="pickProg(this,'BPT')">
+              <div class="pr-icon">🎓</div><div class="pr-name">BPT</div><div class="pr-sub">Bachelor · 4.5 years</div>
+            </div>
+            <div class="prog-opt" onclick="pickProg(this,'MPT')">
+              <div class="pr-icon">🏅</div><div class="pr-name">MPT</div><div class="pr-sub">Master · 2 years</div>
+            </div>
+            <div class="prog-opt" onclick="pickProg(this,'PhD')">
+              <div class="pr-icon">🔬</div><div class="pr-name">PhD</div><div class="pr-sub">Doctorate</div>
+            </div>
+            <div class="prog-opt" onclick="pickProg(this,'Intern')">
+              <div class="pr-icon">🏥</div><div class="pr-name">Internship</div><div class="pr-sub">Clinical rotation</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Year (BPT/MPT) -->
+        <div class="s-card hidden" id="sec-year">
+          <div class="s-card-title">📅 Current Year</div>
+          <div class="s-card-sub">Select which year you are currently in</div>
+          <div class="chips" id="yearChips"></div>
+        </div>
+
+        <!-- MPT Specialisation -->
+        <div class="s-card hidden" id="sec-spec">
+          <div class="s-card-title">🎯 MPT Specialisation</div>
+          <div class="s-card-sub">Which area are you specialising in?</div>
+          <div class="spec-grid" id="specGrid">
+            <div class="spec-opt" onclick="pickSpec(this,'Musculoskeletal')"><div class="sp-icon">🦴</div><div class="sp-name">Musculoskeletal</div></div>
+            <div class="spec-opt" onclick="pickSpec(this,'Neurology')"><div class="sp-icon">🧠</div><div class="sp-name">Neurology</div></div>
+            <div class="spec-opt" onclick="pickSpec(this,'Cardiopulmonary')"><div class="sp-icon">❤️</div><div class="sp-name">Cardiopulmonary</div></div>
+            <div class="spec-opt" onclick="pickSpec(this,'Paediatrics')"><div class="sp-icon">👶</div><div class="sp-name">Paediatrics</div></div>
+            <div class="spec-opt" onclick="pickSpec(this,'Sports')"><div class="sp-icon">⚽</div><div class="sp-name">Sports</div></div>
+            <div class="spec-opt" onclick="pickSpec(this,'Womens Health')"><div class="sp-icon">🌸</div><div class="sp-name">Women's Health</div></div>
+            <div class="spec-opt" onclick="pickSpec(this,'Geriatrics')"><div class="sp-icon">👴</div><div class="sp-name">Geriatrics</div></div>
+            <div class="spec-opt" onclick="pickSpec(this,'Community Rehab')"><div class="sp-icon">🏘️</div><div class="sp-name">Community Rehab</div></div>
+          </div>
+        </div>
+
+        <!-- Subjects -->
+        <div class="s-card hidden" id="sec-subjects">
+          <div class="s-card-title">📚 Your Current Subjects</div>
+          <div class="s-card-sub">These are auto-loaded for your year. Deselect any you're not studying, and your dashboard will show content specific to each subject.</div>
+          <div class="chips" id="subjectChips"></div>
+        </div>
+
+        <!-- Learning Goals -->
+        <div class="s-card">
+          <div class="s-card-title">🎯 Learning Goals</div>
+          <div class="s-card-sub">Select all that apply</div>
+          <div class="chips">
+            <div class="chip on" onclick="this.classList.toggle('on')">📝 Exam prep</div>
+            <div class="chip" onclick="this.classList.toggle('on')">🏥 Clinical skills</div>
+            <div class="chip" onclick="this.classList.toggle('on')">🔬 Research</div>
+            <div class="chip" onclick="this.classList.toggle('on')">💡 Deep understanding</div>
+            <div class="chip" onclick="this.classList.toggle('on')">🎤 Viva preparation</div>
+            <div class="chip" onclick="this.classList.toggle('on')">📊 Evidence based practice</div>
+          </div>
+        </div>
+
+      </div>
+      <!-- end student section -->
+
+      <button class="submit-btn" id="signup-btn" onclick="handleSignup()">Create Account →</button>
+      <div class="switch-text">Already have an account? <a onclick="switchTab('login')">Sign in</a></div>
     </div>
 
-    <!-- SUCCESS STATE -->
-    <div class="success-state" id="success-state">
-      <div class="success-orb">✅</div>
-      <div class="success-title" id="success-title">Welcome aboard!</div>
-      <div class="success-sub" id="success-sub">Your account is ready. Let's get started.</div>
-      <a class="success-btn" id="success-btn" href="condition_library.html">Go to App →</a>
+    <!-- SUCCESS -->
+    <div class="success-wrap" id="success-wrap">
+      <div class="suc-orb">🎉</div>
+      <div class="suc-title" id="suc-title">Welcome!</div>
+      <div class="suc-sub" id="suc-sub">You're all set.</div>
+      <a class="suc-btn" id="suc-btn" href="index.html">Continue →</a>
     </div>
 
   </div>
@@ -327,108 +347,205 @@ body{
 <div class="toast" id="toast"></div>
 
 <script>
-let selectedPersona = 'student';
-let toastTimer;
+// ── DATA ──
+const BPT_SUBJECTS = {
+  1: ['Anatomy','Physiology','Biochemistry','English & Communication','Foundation of Physiotherapy'],
+  2: ['Pathology','Microbiology','Pharmacology','Biomechanics','Exercise Therapy','Electrotherapy'],
+  3: ['Musculoskeletal PT','Neurological PT','Cardiopulmonary PT','Research Methodology','Orthopaedics & Trauma'],
+  4: ['Sports PT','Paediatric PT','Community Rehab','Geriatric PT','PT Management','Evidence Based Practice','Comprehensive Rehab']
+};
+const MPT_SUBJECTS = {
+  'Musculoskeletal': ['Advanced MSK Assessment','Manual Therapy','Ergonomics','Sports Injury Rehab','Pain Management','Research Methods'],
+  'Neurology':       ['Advanced Neuro Assessment','Stroke Rehab','Spinal Cord Injury','TBI Rehab','Neurodegenerative Disorders','Neuro Research'],
+  'Cardiopulmonary': ['Advanced Cardiac Rehab','Pulmonary Rehab','ICU Physiotherapy','Ventilator Weaning','Cardiac Pharmacology','Research'],
+  'Paediatrics':     ['Paediatric Assessment','CP Rehab','Developmental Delay','NDT Techniques','Paediatric Neuro','NICU PT'],
+  'Sports':          ['Sports Biomechanics','Injury Prevention','Performance Enhancement','Sports Taping','Return to Sport','Research'],
+  'Womens Health':   ['Obstetric PT','Urogynaecology','Pelvic Floor Rehab','Pre & Post Natal Exercise','Lymphoedema','Research'],
+  'Geriatrics':      ['Falls Prevention','Frailty Management','Osteoporosis','Dementia & PT','Geriatric Assessment','Research'],
+  'Community Rehab': ['CBR Strategies','Disability Management','Health Promotion','Rural Physiotherapy','Assistive Technology','Research']
+};
+const INTERN_SUBJECTS = ['MSK Rotation','Neuro Rotation','Cardio Rotation','Paediatric Rotation','Sports Rotation','Community Rotation','OPD & IPD','Research Project'];
 
+// ── STATE ──
+let persona = 'patient';
+let prog = '';
+let year = 0;
+let spec = '';
+let toastT;
+
+// ── HELPERS ──
+function $(id){ return document.getElementById(id); }
 function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.classList.remove('show'),2500);
+  clearTimeout(toastT);
+  const t = $('toast');
+  t.textContent = msg; t.classList.add('show');
+  toastT = setTimeout(() => t.classList.remove('show'), 2600);
 }
-
 function switchTab(tab){
-  document.getElementById('tab-login').classList.toggle('active',tab==='login');
-  document.getElementById('tab-signup').classList.toggle('active',tab==='signup');
-  document.getElementById('panel-login').style.display=tab==='login'?'block':'none';
-  document.getElementById('panel-signup').style.display=tab==='signup'?'block':'none';
-  document.getElementById('success-state').classList.remove('visible');
+  ['login','signup'].forEach(t => {
+    $(('panel-' + t)).classList.toggle('active', t === tab);
+    $(('tab-' + t)).classList.toggle('active', t === tab);
+  });
+  $('success-wrap').classList.remove('show');
+}
+function togglePwd(id, btn){
+  const i = $(id);
+  i.type = i.type === 'password' ? 'text' : 'password';
+  btn.textContent = i.type === 'password' ? '👁' : '🙈';
+}
+function show(id){ $(id).classList.remove('hidden'); }
+function hide(id){ $(id).classList.add('hidden'); }
+
+// ── PERSONA ──
+function pickPersona(p){
+  persona = p;
+  ['patient','student','therapist','teacher'].forEach(x =>
+    $('popt-' + x).classList.toggle('selected', x === p)
+  );
+  const isStudent = p === 'student';
+  isStudent ? hide('field-other') : show('field-other');
+  isStudent ? show('field-student') : hide('field-student');
+  if(!isStudent){
+    const labels = {patient:'Chief Complaint / Condition', therapist:'Clinic / Hospital Name', teacher:'College / Institution'};
+    const placeholders = {patient:'e.g. Lower back pain, Knee injury', therapist:'e.g. Apollo Clinic, Private Practice', teacher:'e.g. MGM College of Physiotherapy'};
+    $('other-label').textContent = labels[p] || '';
+    $('other-input').placeholder = placeholders[p] || '';
+  }
 }
 
-function selectPersona(el, persona){
-  selectedPersona=persona;
-  document.querySelectorAll('.persona-opt').forEach(o=>o.classList.remove('selected'));
+// ── PROGRAMME ──
+function pickProg(el, p){
+  prog = p; year = 0; spec = '';
+  document.querySelectorAll('#progGrid .prog-opt').forEach(o => o.classList.remove('selected'));
   el.classList.add('selected');
+  hide('sec-year'); hide('sec-spec'); hide('sec-subjects');
+  $('yearChips').innerHTML = '';
+  $('subjectChips').innerHTML = '';
 
-  const labels={
-    patient:'Chief Complaint / Condition',
-    student:'University / Institution',
-    therapist:'Clinic / Hospital Name',
-    teacher:'College / Institution'
-  };
-  const placeholders={
-    patient:'e.g. Lower back pain, Knee injury',
-    student:'e.g. AIIMS, KMC, University of Mumbai',
-    therapist:'e.g. Apollo Hospital, Private Practice',
-    teacher:'e.g. MGM College of Physiotherapy'
-  };
-  document.getElementById('dynamic-label').textContent=labels[persona];
-  document.getElementById('dynamic-input').placeholder=placeholders[persona];
+  if(p === 'BPT'){
+    show('sec-year');
+    $('yearChips').innerHTML = ['1st Year','2nd Year','3rd Year','4th Year'].map((y, i) =>
+      '<div class="chip" onclick="pickYear(this,' + (i+1) + ')">' + y + '</div>'
+    ).join('');
+  } else if(p === 'MPT'){
+    show('sec-year'); show('sec-spec');
+    $('yearChips').innerHTML = ['1st Year','2nd Year'].map((y, i) =>
+      '<div class="chip" onclick="pickYear(this,' + (i+1) + ')">' + y + '</div>'
+    ).join('');
+  } else if(p === 'Intern'){
+    loadSubjects(INTERN_SUBJECTS);
+  } else if(p === 'PhD'){
+    show('sec-subjects');
+    $('subjectChips').innerHTML = ['Research Methodology','Literature Review','Thesis Writing','Statistical Analysis','Ethical Research','Clinical Trials']
+      .map(s => '<div class="chip on" onclick="this.classList.toggle(\'on\')">' + s + '</div>').join('');
+  }
+  showToast('✅ ' + p + ' selected!');
 }
 
-function togglePassword(id, btn){
-  const inp=document.getElementById(id);
-  if(inp.type==='password'){inp.type='text';btn.textContent='🙈';}
-  else{inp.type='password';btn.textContent='👁';}
+// ── YEAR ──
+function pickYear(el, y){
+  year = y;
+  document.querySelectorAll('#yearChips .chip').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+  if(prog === 'BPT') loadSubjects(BPT_SUBJECTS[y] || []);
+  else showToast('📅 Year ' + y + ' selected');
 }
 
+// ── SPECIALISATION ──
+function pickSpec(el, s){
+  spec = s;
+  document.querySelectorAll('#specGrid .spec-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  loadSubjects(MPT_SUBJECTS[s] || []);
+}
+
+// ── LOAD SUBJECTS ──
+function loadSubjects(subjects){
+  show('sec-subjects');
+  $('subjectChips').innerHTML = subjects.map(s =>
+    '<div class="chip on" onclick="this.classList.toggle(\'on\')">' + s + '</div>'
+  ).join('');
+  $('sec-subjects').scrollIntoView({behavior:'smooth', block:'nearest'});
+  showToast('📚 ' + subjects.length + ' subjects loaded — deselect any you\'re not studying');
+}
+
+// ── LOGIN ──
 function handleLogin(){
-  const email=document.getElementById('login-email').value.trim();
-  const pass=document.getElementById('login-password').value;
-  if(!email){showToast('⚠️ Please enter your email');return;}
-  if(!pass){showToast('⚠️ Please enter your password');return;}
-
-  const btn=document.querySelector('#panel-login .submit-btn');
-  btn.textContent='Signing in...';btn.classList.add('loading');
-
-  setTimeout(()=>{
-    btn.textContent='Sign In →';btn.classList.remove('loading');
-    // Show success
-    document.getElementById('panel-login').style.display='none';
-    document.getElementById('success-title').textContent='Welcome back! 👋';
-    document.getElementById('success-sub').textContent='Great to see you again. Your progress is waiting.';
-    document.getElementById('success-btn').textContent='Continue →';
-    document.getElementById('success-btn').href='patient_onboarding.html';
-    document.getElementById('success-state').classList.add('visible');
-  },1200);
+  const email = $('login-email').value.trim();
+  const pass = $('login-password').value;
+  if(!email){ showToast('⚠️ Please enter your email'); return; }
+  if(!pass){ showToast('⚠️ Please enter your password'); return; }
+  const btn = $('panel-login').querySelector('.submit-btn');
+  btn.textContent = 'Signing in...'; btn.classList.add('loading');
+  setTimeout(() => {
+    $('panel-login').classList.remove('active');
+    $('suc-title').textContent = 'Welcome back! 👋';
+    $('suc-sub').textContent = 'Great to see you again. Your progress is waiting.';
+    $('suc-btn').textContent = 'Continue →';
+    $('suc-btn').href = 'physio_student_hub.html';
+    $('success-wrap').classList.add('show');
+    btn.textContent = 'Sign In →'; btn.classList.remove('loading');
+  }, 1200);
 }
 
+// ── SIGNUP ──
 function handleSignup(){
-  const fname=document.getElementById('signup-fname').value.trim();
-  const email=document.getElementById('signup-email').value.trim();
-  const pass=document.getElementById('signup-password').value;
+  const fname = $('signup-fname').value.trim();
+  const email = $('signup-email').value.trim();
+  const pass = $('signup-password').value;
+  if(!fname){ showToast('⚠️ Please enter your name'); return; }
+  if(!email){ showToast('⚠️ Please enter your email'); return; }
+  if(!pass || pass.length < 6){ showToast('⚠️ Password must be 6+ characters'); return; }
+  if(persona === 'student'){
+    if(!$('stu-univ').value.trim()){ showToast('⚠️ Please enter your university'); return; }
+    if(!$('stu-college').value.trim()){ showToast('⚠️ Please enter your college'); return; }
+    if(!prog){ showToast('⚠️ Please select your programme (BPT / MPT etc.)'); return; }
+  }
 
-  if(!fname){showToast('⚠️ Please enter your first name');return;}
-  if(!email){showToast('⚠️ Please enter your email');return;}
-  if(!pass||pass.length<6){showToast('⚠️ Password must be at least 6 characters');return;}
+  const btn = $('signup-btn');
+  btn.textContent = 'Creating account...'; btn.classList.add('loading');
 
-  const btn=document.getElementById('signup-btn');
-  btn.textContent='Creating account...';btn.classList.add('loading');
+  setTimeout(() => {
+    btn.textContent = 'Create Account →'; btn.classList.remove('loading');
+    $('panel-signup').classList.remove('active');
 
-  setTimeout(()=>{
-    btn.textContent='Create Account →';btn.classList.remove('loading');
-    document.getElementById('panel-signup').style.display='none';
-
-    const destinations={
-      patient:'patient_onboarding.html',
-      student:'physio_student_hub.html',
-      therapist:'condition_library.html',
-      teacher:'condition_library.html'
+    const destinations = { patient:'patient_onboarding.html', student:'physio_student_hub.html', therapist:'condition_library.html', teacher:'condition_library.html' };
+    const messages = {
+      patient: "Your recovery journey starts now! Let's set up your profile.",
+      student: "Your AI-powered study dashboard is ready — personalised for " + (prog || 'your programme') + "!",
+      therapist: "Your clinical assistant is ready.",
+      teacher: "Your teaching toolkit is ready."
     };
-    const messages={
-      patient:"Your recovery journey starts now! Let's set up your profile.",
-      student:"Welcome to your AI-powered study companion!",
-      therapist:"Your clinical assistant is ready.",
-      teacher:"Your teaching toolkit is ready."
-    };
+    const btnLabels = { patient:'Set Up My Profile →', student:'Open My Dashboard →', therapist:'Go to App →', teacher:'Go to App →' };
 
-    document.getElementById('success-title').textContent=`Welcome, ${fname}! 🎉`;
-    document.getElementById('success-sub').textContent=messages[selectedPersona];
-    document.getElementById('success-btn').textContent=selectedPersona==='patient'?'Set Up My Profile →':'Go to App →';
-    document.getElementById('success-btn').href=destinations[selectedPersona];
-    document.getElementById('success-state').classList.add('visible');
-  },1400);
+    $('suc-title').textContent = 'Welcome, ' + fname + '! 🎉';
+    $('suc-sub').textContent = messages[persona];
+    $('suc-btn').textContent = btnLabels[persona];
+    $('suc-btn').href = destinations[persona];
+    $('success-wrap').classList.add('show');
+
+    // Save student profile
+    if(persona === 'student'){
+      const subjects = [...document.querySelectorAll('#subjectChips .chip.on')].map(c => c.textContent);
+      const goals = [...document.querySelectorAll('.s-card:last-of-type .chip.on')].map(c => c.textContent);
+      const profile = {
+        name: fname,
+        university: $('stu-univ').value,
+        college: $('stu-college').value,
+        city: $('stu-city').value,
+        programme: prog,
+        year: year,
+        specialisation: spec,
+        subjects: subjects,
+        goals: goals
+      };
+      try { sessionStorage.setItem('physiolearn_student', JSON.stringify(profile)); } catch(e){}
+    }
+  }, 1400);
 }
+
+// Init — patient selected by default
+pickPersona('patient');
 </script>
 </body>
 </html>
