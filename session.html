@@ -7,465 +7,781 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --cream:#FDF8F2;--warm:#FFFBF5;--peach:#FFE8D6;
-  --coral:#FF7B54;--coral-l:#FF9B76;
-  --teal:#2D9B8A;--teal-l:#E0F5F1;
-  --purple:#7B5EA7;--purple-l:#EDE8F7;
-  --gold:#F2A93B;--gold-l:#FFF3D6;
-  --green:#52B788;--green-l:#E8F7EF;
-  --text:#2C2318;--mid:#6B5B4E;--light:#A89888;
-  --border:#F0E8DF;
-  --dark:#1A1208;
-  --sh:0 4px 24px rgba(44,35,24,.08);
-  --sh2:0 12px 40px rgba(44,35,24,.18);
-  --r:20px;--rs:12px;
+  --dark:#13110F; --dark2:#1E1A14;
+  --coral:#FF7B54; --coral-l:#FF9B76;
+  --teal:#2D9B8A;  --purple:#9B6BFF;
+  --gold:#F2A93B;  --green:#52B788;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Nunito',sans-serif;background:var(--dark);color:white;min-height:100vh;overflow-x:hidden;}
 
-/* ── PRE-SESSION SCREEN ── */
-#preSession{
-  min-height:100vh;
-  background:linear-gradient(160deg,#1A1208 0%,#2C2318 60%,#1A3C40 100%);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:32px 24px;text-align:center;
-  position:relative;overflow:hidden;
-}
-#preSession::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(255,123,84,.12) 0%,transparent 70%);}
-
-.pre-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:50px;padding:7px 18px;font-size:11px;font-weight:800;color:rgba(255,255,255,.7);letter-spacing:.08em;text-transform:uppercase;margin-bottom:20px;}
-.pre-title{font-family:'Playfair Display',serif;font-size:clamp(28px,6vw,48px);font-weight:700;color:white;line-height:1.2;margin-bottom:10px;}
+/* ── PRE SESSION ── */
+#preSession{min-height:100vh;background:linear-gradient(160deg,#13110F,#1E1A14 60%,#0D1E1C);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;text-align:center;}
+.pre-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(155,107,255,.12);border:1px solid rgba(155,107,255,.3);border-radius:50px;padding:7px 16px;font-size:11px;font-weight:800;color:#C4A8FF;letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px;}
+.pre-title{font-family:'Playfair Display',serif;font-size:clamp(26px,6vw,42px);font-weight:700;color:white;margin-bottom:8px;}
 .pre-title span{color:var(--coral-l);}
-.pre-sub{font-size:14px;color:rgba(255,255,255,.6);font-weight:600;max-width:400px;margin:0 auto 32px;line-height:1.7;}
+.pre-sub{font-size:13px;color:rgba(255,255,255,.5);font-weight:600;max-width:360px;margin:0 auto 26px;line-height:1.7;}
+.si-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:24px;}
+.si-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:13px 18px;text-align:center;min-width:78px;}
+.si-v{font-size:20px;font-weight:900;color:white;}
+.si-l{font-size:9px;color:rgba(255,255,255,.4);font-weight:700;margin-top:3px;text-transform:uppercase;letter-spacing:.06em;}
+.ep-list{width:100%;max-width:420px;display:flex;flex-direction:column;gap:6px;margin-bottom:26px;}
+.ep-item{display:flex;align-items:center;gap:11px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:11px 13px;}
+.ep-n{width:24px;height:24px;border-radius:50%;background:rgba(255,123,84,.18);border:1px solid rgba(255,123,84,.4);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:var(--coral-l);flex-shrink:0;}
+.ep-name{flex:1;font-size:13px;font-weight:700;color:rgba(255,255,255,.8);}
+.ep-d{font-size:10px;color:rgba(255,255,255,.3);}
+.btn-start{padding:16px 48px;border-radius:50px;background:linear-gradient(135deg,var(--coral),#FF5F8A);color:white;font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;border:none;cursor:pointer;box-shadow:0 8px 28px rgba(255,123,84,.35);transition:all .25s;}
+.btn-start:hover{transform:translateY(-2px);}
 
-.session-info-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:36px;}
-.si-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:var(--rs);padding:14px 20px;text-align:center;min-width:100px;}
-.si-val{font-size:22px;font-weight:900;color:white;}
-.si-lbl{font-size:10px;color:rgba(255,255,255,.5);font-weight:700;margin-top:3px;}
-
-.exercises-preview{width:100%;max-width:480px;display:flex;flex-direction:column;gap:8px;margin-bottom:32px;}
-.ep-item{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--rs);padding:12px 16px;}
-.ep-num{width:28px;height:28px;border-radius:50%;background:rgba(255,123,84,.3);border:1px solid var(--coral);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--coral-l);flex-shrink:0;}
-.ep-name{flex:1;font-size:13px;font-weight:700;color:rgba(255,255,255,.85);}
-.ep-detail{font-size:11px;color:rgba(255,255,255,.4);font-weight:600;}
-
-.btn-start-session{padding:16px 48px;border-radius:50px;background:linear-gradient(135deg,var(--coral),var(--coral-l));color:white;font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;border:none;cursor:pointer;box-shadow:0 8px 28px rgba(255,123,84,.4);transition:all .25s;letter-spacing:.02em;}
-.btn-start-session:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(255,123,84,.5);}
-
-/* ── MAIN SESSION ── */
+/* ── HUD ── */
 #mainSession{display:none;min-height:100vh;background:var(--dark);}
+.hud{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(19,17,15,.96);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.07);}
+.hud-back{width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.07);border:none;color:white;font-size:15px;cursor:pointer;}
+.hud-title{font-size:11px;font-weight:800;color:rgba(255,255,255,.6);}
+.hud-c{flex:1;display:flex;flex-direction:column;align-items:center;}
+.spb{width:100%;max-width:150px;height:3px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;margin-bottom:2px;}
+.spb-f{height:100%;background:linear-gradient(90deg,var(--purple),var(--coral));transition:width .6s;}
+.hud-pct{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);}
+.hud-r{display:flex;gap:7px;}
+.xp-p{display:flex;align-items:center;gap:4px;background:rgba(242,169,59,.1);border:1px solid rgba(242,169,59,.22);border-radius:50px;padding:5px 9px;font-size:11px;font-weight:800;color:var(--gold);}
+.t-p{display:flex;align-items:center;gap:4px;background:rgba(255,123,84,.1);border:1px solid rgba(255,123,84,.22);border-radius:50px;padding:5px 9px;font-size:11px;font-weight:800;color:var(--coral-l);}
 
-/* TOP HUD */
-.hud{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  display:flex;align-items:center;gap:12px;
-  padding:12px 20px;
-  background:rgba(26,18,8,.95);backdrop-filter:blur(12px);
-  border-bottom:1px solid rgba(255,255,255,.08);
+/* ── EXERCISE AREA ── */
+.ex-area{padding:68px 14px 80px;max-width:500px;margin:0 auto;}
+.ex-card{background:linear-gradient(145deg,#1E1A14,#161210);border:1px solid rgba(255,255,255,.08);border-radius:22px;overflow:hidden;margin-bottom:12px;}
+.ex-header{padding:16px 16px 0;}
+.ex-number{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:4px;}
+.ex-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:white;margin-bottom:3px;}
+.ex-target{font-size:11px;font-weight:600;color:rgba(255,255,255,.35);margin-bottom:14px;}
+
+/* ══════════════════════════════════════════
+   PHOTO FRAME DISPLAY
+   Shows real exercise photos that flip like
+   a photo reel — START → HOLD → FINISH
+══════════════════════════════════════════ */
+.photo-stage{
+  width:100%;
+  aspect-ratio:4/3;
+  position:relative;
+  background:#0A0A0A;
+  overflow:hidden;
 }
-.hud-left{display:flex;align-items:center;gap:10px;}
-.hud-back{width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.08);border:none;color:white;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
-.hud-back:hover{background:rgba(255,255,255,.15);}
-.hud-title{font-size:13px;font-weight:800;color:rgba(255,255,255,.8);}
-.hud-center{flex:1;display:flex;flex-direction:column;align-items:center;}
-.session-progress-bar{width:100%;max-width:200px;height:5px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden;margin-bottom:3px;}
-.session-progress-fill{height:100%;background:linear-gradient(90deg,var(--coral),var(--coral-l));border-radius:4px;transition:width .5s ease;}
-.hud-progress-text{font-size:10px;font-weight:700;color:rgba(255,255,255,.4);}
-.hud-right{display:flex;align-items:center;gap:10px;}
-.xp-pill{display:flex;align-items:center;gap:5px;background:rgba(242,169,59,.15);border:1px solid rgba(242,169,59,.3);border-radius:50px;padding:5px 12px;font-size:12px;font-weight:800;color:var(--gold);}
-.timer-pill{display:flex;align-items:center;gap:5px;background:rgba(255,123,84,.15);border:1px solid rgba(255,123,84,.3);border-radius:50px;padding:5px 12px;font-size:12px;font-weight:800;color:var(--coral-l);}
 
-/* EXERCISE AREA */
-.exercise-area{
-  padding:90px 20px 120px;
-  max-width:560px;margin:0 auto;
-  display:flex;flex-direction:column;align-items:center;
-}
-
-/* EXERCISE CARD */
-.ex-card{
-  width:100%;background:linear-gradient(145deg,#2A2010,#1E1A0E);
-  border:1px solid rgba(255,255,255,.1);border-radius:24px;
-  padding:28px 24px;margin-bottom:20px;
-  position:relative;overflow:hidden;
-  box-shadow:0 8px 32px rgba(0,0,0,.4);
-}
-.ex-card::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,123,84,.05);}
-.ex-number{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px;}
-.ex-name{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:white;margin-bottom:6px;}
-.ex-target{font-size:13px;font-weight:600;color:rgba(255,255,255,.5);margin-bottom:20px;}
-
-/* EXERCISE ANIMATION */
-.ex-animation{
-  width:100%;aspect-ratio:16/9;border-radius:16px;
-  background:linear-gradient(135deg,rgba(45,155,138,.15),rgba(255,123,84,.1));
-  border:1px solid rgba(255,255,255,.08);
+/* Photo frames — crossfade between them */
+.photo-frame{
+  position:absolute;inset:0;
   display:flex;align-items:center;justify-content:center;
-  margin-bottom:20px;position:relative;overflow:hidden;
+  opacity:0;
+  transition:opacity .7s ease;
 }
-.ex-figure{font-size:64px;animation:exerciseAnim 2s ease-in-out infinite;}
-@keyframes exerciseAnim{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-12px) scale(1.05)}}
-.ex-anim-label{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:700;color:rgba(255,255,255,.4);white-space:nowrap;}
+.photo-frame.active{opacity:1;}
+.photo-frame img{
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:center;
+}
 
-/* SETS/REPS DISPLAY */
-.sets-reps{display:flex;gap:10px;margin-bottom:20px;}
-.sr-item{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--rs);padding:12px;text-align:center;}
-.sr-val{font-size:24px;font-weight:900;color:white;}
-.sr-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,.4);margin-top:2px;}
+/* Fallback when image fails to load */
+.photo-frame .fallback{
+  display:none;
+  width:100%;height:100%;
+  align-items:center;justify-content:center;
+  flex-direction:column;
+  gap:12px;
+  background:linear-gradient(145deg,#1A1612,#252018);
+}
+.photo-frame img.error + .fallback,
+.photo-frame img.hidden + .fallback { display:flex; }
+.fallback-icon{font-size:52px;}
+.fallback-label{font-size:13px;font-weight:700;color:rgba(255,255,255,.4);}
 
-/* REP COUNTER */
-.rep-counter-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:20px;}
-.rep-ring{position:relative;width:120px;height:120px;margin-bottom:12px;}
-.rep-ring svg{transform:rotate(-90deg);}
-.rep-ring-bg{fill:none;stroke:rgba(255,255,255,.1);stroke-width:8;}
-.rep-ring-fill{fill:none;stroke:var(--coral);stroke-width:8;stroke-linecap:round;stroke-dasharray:283;transition:stroke-dashoffset .4s ease;}
-.rep-number{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
-.rep-num-val{font-size:32px;font-weight:900;color:white;}
-.rep-num-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,.4);}
+/* PHASE CHIP — top left overlay on photo */
+.phase-chip{
+  position:absolute;top:12px;left:12px;
+  background:rgba(0,0,0,.72);
+  border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(8px);
+  border-radius:8px;padding:5px 12px;
+  font-size:11px;font-weight:800;color:white;
+  letter-spacing:.05em;text-transform:uppercase;
+  z-index:10;
+  transition:all .4s;
+}
 
-/* BUTTONS */
-.ex-btns{display:flex;gap:10px;}
-.btn-rep{flex:1;padding:15px;border-radius:50px;background:linear-gradient(135deg,var(--coral),var(--coral-l));border:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;color:white;cursor:pointer;transition:all .25s;box-shadow:0 6px 20px rgba(255,123,84,.35);}
-.btn-rep:hover{transform:translateY(-2px);}
-.btn-rep:active{transform:scale(.97);}
-.btn-skip{padding:15px 20px;border-radius:50px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;color:rgba(255,255,255,.5);cursor:pointer;transition:all .2s;}
-.btn-skip:hover{border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.8);}
+/* MUSCLE CHIP — top right */
+.muscle-chip-overlay{
+  position:absolute;top:12px;right:12px;
+  background:rgba(155,107,255,.25);
+  border:1px solid rgba(155,107,255,.5);
+  backdrop-filter:blur(8px);
+  border-radius:8px;padding:5px 12px;
+  font-size:10px;font-weight:800;color:#D4BAFF;
+  z-index:10;
+}
+
+/* PHOTO NAV DOTS */
+.photo-dots{
+  position:absolute;bottom:12px;left:50%;transform:translateX(-50%);
+  display:flex;gap:6px;z-index:10;
+}
+.pd{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.3);transition:all .3s;}
+.pd.active{width:18px;border-radius:3px;background:white;}
+
+/* PHOTO REEL STRIP — bottom strip showing all phases */
+.reel-strip{
+  display:flex;border-top:1px solid rgba(255,255,255,.08);
+  background:#111;
+}
+.reel-frame{
+  flex:1;padding:10px 6px;text-align:center;cursor:pointer;
+  border-right:1px solid rgba(255,255,255,.05);
+  transition:background .2s;
+  position:relative;
+}
+.reel-frame:last-child{border-right:none;}
+.reel-frame.active{background:rgba(255,123,84,.1);}
+.reel-frame.active::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--coral);
+}
+.rf-icon{font-size:18px;margin-bottom:3px;}
+.rf-label{font-size:9px;font-weight:800;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.05em;}
+.reel-frame.active .rf-label{color:var(--coral-l);}
+
+/* COACH TIP */
+.coach-tip{
+  padding:12px 16px;
+  background:rgba(155,107,255,.07);
+  border-top:1px solid rgba(155,107,255,.15);
+}
+.tip-lbl{font-size:9px;font-weight:800;color:var(--purple);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;}
+.tip-txt{font-size:12px;font-weight:700;color:rgba(255,255,255,.78);line-height:1.5;min-height:36px;transition:opacity .3s;}
+
+/* MUSCLE TAGS */
+.muscle-tags{display:flex;gap:6px;flex-wrap:wrap;padding:12px 16px 0;}
+.mt{padding:5px 12px;border-radius:50px;font-size:11px;font-weight:800;}
+.mt.primary{background:rgba(255,123,84,.15);border:1px solid rgba(255,123,84,.35);color:#FF9B76;}
+.mt.secondary{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.45);}
+
+/* SETS / REPS */
+.ex-body{padding:12px 16px 16px;}
+.sets-row{display:flex;gap:8px;margin-bottom:10px;}
+.sr{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:9px;text-align:center;}
+.sr-v{font-size:19px;font-weight:900;color:white;}
+.sr-l{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);margin-top:1px;text-transform:uppercase;}
+
+/* REP RING */
+.rep-block{display:flex;flex-direction:column;align-items:center;margin-bottom:11px;}
+.rep-rw{position:relative;width:106px;height:106px;margin-bottom:7px;}
+.rep-rw svg{transform:rotate(-90deg);}
+.rr-bg{fill:none;stroke:rgba(255,255,255,.08);stroke-width:8;}
+.rr-f{fill:none;stroke:var(--coral);stroke-width:8;stroke-linecap:round;stroke-dasharray:298;stroke-dashoffset:298;transition:stroke-dashoffset .35s ease;}
+.rep-c{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
+.rep-n{font-size:28px;font-weight:900;color:white;line-height:1;}
+.rep-l{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);margin-top:1px;}
+.rtb-wrap{width:100%;max-width:250px;height:5px;background:rgba(255,255,255,.07);border-radius:50px;overflow:hidden;margin-bottom:7px;}
+.rtb{height:100%;background:linear-gradient(90deg,var(--teal),var(--coral));border-radius:50px;transition:width .1s linear;}
+.rtb-txt{font-size:10px;font-weight:700;color:rgba(255,255,255,.3);margin-bottom:10px;}
 
 /* INSTRUCTIONS */
-.ex-instructions{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--rs);padding:16px;margin-bottom:16px;}
-.inst-title{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px;}
-.inst-list{display:flex;flex-direction:column;gap:6px;}
-.inst-item{display:flex;align-items:flex-start;gap:8px;font-size:12px;font-weight:600;color:rgba(255,255,255,.6);line-height:1.5;}
-.inst-dot{width:6px;height:6px;border-radius:50%;background:var(--coral);flex-shrink:0;margin-top:5px;}
+.inst-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:11px;margin-bottom:10px;}
+.inst-ttl{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:7px;}
+.inst-item{display:flex;align-items:flex-start;gap:7px;font-size:11px;font-weight:600;color:rgba(255,255,255,.5);line-height:1.5;margin-bottom:3px;}
+.inst-dot{width:4px;height:4px;border-radius:50%;background:var(--coral);flex-shrink:0;margin-top:5px;}
+.btn-skip{width:100%;padding:11px;border-radius:50px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:rgba(255,255,255,.3);cursor:pointer;}
 
-/* REST SCREEN */
-.rest-screen{
-  display:none;
-  min-height:100vh;background:linear-gradient(135deg,#0D2B28,#1A3C40);
-  align-items:center;justify-content:center;flex-direction:column;
-  text-align:center;padding:24px;
-  position:fixed;inset:0;z-index:200;
-}
-.rest-screen.visible{display:flex;animation:fadeIn .3s ease;}
-.rest-title{font-family:'Playfair Display',serif;font-size:32px;color:white;font-weight:700;margin-bottom:8px;}
-.rest-sub{font-size:14px;color:rgba(255,255,255,.6);font-weight:600;margin-bottom:32px;}
-.rest-timer{font-size:72px;font-weight:900;color:var(--teal);margin-bottom:8px;font-family:'Playfair Display',serif;}
-.rest-lbl{font-size:13px;color:rgba(255,255,255,.4);font-weight:700;margin-bottom:28px;}
-.btn-skip-rest{padding:12px 28px;border-radius:50px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;color:rgba(255,255,255,.7);cursor:pointer;transition:all .2s;}
-.btn-skip-rest:hover{background:rgba(255,255,255,.2);}
+/* ── OVERLAYS ── */
+.overlay{display:none;min-height:100vh;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:28px;position:fixed;inset:0;z-index:300;}
+.overlay.show{display:flex;animation:fi .3s ease;}
+@keyframes fi{from{opacity:0}to{opacity:1}}
 
-/* COMPLETION SCREEN */
-.completion-screen{
-  display:none;min-height:100vh;
-  background:linear-gradient(160deg,#1A1208,#2C2318,#1A3C40);
-  align-items:center;justify-content:center;flex-direction:column;
-  text-align:center;padding:32px 24px;
-}
-.completion-screen.visible{display:flex;animation:fadeIn .5s ease;}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.confetti{font-size:48px;margin-bottom:16px;animation:bounce2 .6s ease infinite alternate;}
-@keyframes bounce2{from{transform:scale(1)}to{transform:scale(1.15)}}
-.comp-title{font-family:'Playfair Display',serif;font-size:36px;color:white;font-weight:700;margin-bottom:8px;}
-.comp-sub{font-size:14px;color:rgba(255,255,255,.6);font-weight:600;margin-bottom:32px;max-width:360px;}
-.comp-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;width:100%;max-width:400px;margin-bottom:32px;}
-.cs-item{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:var(--rs);padding:16px;}
-.cs-val{font-size:24px;font-weight:900;color:white;}
-.cs-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,.4);margin-top:3px;}
-.xp-earned{display:inline-flex;align-items:center;gap:8px;background:rgba(242,169,59,.15);border:1px solid rgba(242,169,59,.3);border-radius:50px;padding:10px 24px;font-size:16px;font-weight:800;color:var(--gold);margin-bottom:24px;animation:glow 2s infinite;}
-@keyframes glow{0%,100%{box-shadow:0 0 12px rgba(242,169,59,.2)}50%{box-shadow:0 0 24px rgba(242,169,59,.5)}}
-.comp-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
-.btn-comp-primary{padding:14px 28px;border-radius:50px;background:linear-gradient(135deg,var(--coral),var(--coral-l));color:white;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;border:none;cursor:pointer;box-shadow:0 6px 20px rgba(255,123,84,.35);text-decoration:none;display:inline-flex;align-items:center;gap:7px;}
-.btn-comp-secondary{padding:14px 28px;border-radius:50px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;}
+#restScreen{background:linear-gradient(135deg,#0A1F1A,#0E2820);}
+.rest-icon{font-size:50px;margin-bottom:12px;animation:br 2s ease-in-out infinite;}
+@keyframes br{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.rest-ttl{font-family:'Playfair Display',serif;font-size:24px;color:white;font-weight:700;margin-bottom:5px;}
+.rest-sub{font-size:12px;color:rgba(255,255,255,.5);font-weight:600;margin-bottom:20px;max-width:280px;}
+.rest-rw{position:relative;width:116px;height:116px;margin-bottom:6px;}
+.rest-rw svg{transform:rotate(-90deg);}
+.rrb{fill:none;stroke:rgba(255,255,255,.08);stroke-width:7;}
+.rrf{fill:none;stroke:var(--teal);stroke-width:7;stroke-linecap:round;stroke-dasharray:330;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear;}
+.rest-n{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:38px;font-weight:900;color:var(--teal);}
+.rest-lbl{font-size:11px;color:rgba(255,255,255,.3);font-weight:700;margin-bottom:16px;}
+.btn-sr{padding:10px 24px;border-radius:50px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:rgba(255,255,255,.6);cursor:pointer;}
 
-/* TOAST */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:rgba(255,255,255,.15);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.2);color:white;padding:11px 20px;border-radius:var(--rs);font-size:13px;font-weight:700;opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);z-index:999;white-space:nowrap;}
+#sigScreen{background:linear-gradient(160deg,#13110F,#1A0F2A);overflow-y:auto;}
+.sig-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(155,107,255,.12);border:1px solid rgba(155,107,255,.3);border-radius:50px;padding:6px 14px;font-size:10px;font-weight:800;color:var(--purple);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;}
+.sig-em{font-size:46px;margin-bottom:8px;animation:pop .5s cubic-bezier(.34,1.56,.64,1);}
+@keyframes pop{from{transform:scale(0) rotate(-10deg)}to{transform:scale(1) rotate(0)}}
+.sig-nm{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;color:white;margin-bottom:5px;}
+.sig-xp{display:inline-flex;align-items:center;gap:5px;background:rgba(242,169,59,.1);border:1px solid rgba(242,169,59,.25);border-radius:50px;padding:5px 13px;font-size:12px;font-weight:800;color:var(--gold);margin-bottom:15px;}
+.sig-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:17px;max-width:400px;width:100%;text-align:left;margin-bottom:14px;}
+.sig-ttl{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:10px;}
+.sig-pt{display:flex;align-items:flex-start;gap:8px;margin-bottom:9px;}
+.sig-pt:last-child{margin-bottom:0;}
+.sig-pt-i{font-size:15px;flex-shrink:0;}
+.sig-pt-t{font-size:11px;font-weight:600;color:rgba(255,255,255,.7);line-height:1.6;}
+.sig-pt-t strong{color:white;}
+.sig-btn{padding:13px 30px;border-radius:50px;background:linear-gradient(135deg,var(--coral),#FF5F8A);color:white;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;border:none;cursor:pointer;}
+
+#completionScreen{background:linear-gradient(160deg,#13110F,#0A1F1A);}
+.comp-orb{width:82px;height:82px;border-radius:50%;background:linear-gradient(135deg,var(--green),#6FD4A0);display:flex;align-items:center;justify-content:center;font-size:36px;box-shadow:0 12px 36px rgba(82,183,136,.4);animation:pop .5s cubic-bezier(.34,1.56,.64,1);margin-bottom:16px;}
+.comp-ttl{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:white;margin-bottom:6px;}
+.comp-sub{font-size:12px;color:rgba(255,255,255,.5);font-weight:600;margin-bottom:18px;max-width:300px;}
+.comp-xp{font-size:38px;font-weight:900;color:var(--gold);}
+.comp-xl{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);margin-bottom:18px;text-transform:uppercase;letter-spacing:.08em;}
+.comp-stats{display:flex;gap:8px;justify-content:center;margin-bottom:18px;}
+.cs{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:11px 15px;text-align:center;}
+.cs-v{font-size:17px;font-weight:900;color:white;}
+.cs-l{font-size:9px;font-weight:700;color:rgba(255,255,255,.35);margin-top:2px;text-transform:uppercase;}
+.comp-btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
+.cbp{padding:12px 24px;border-radius:50px;background:linear-gradient(135deg,var(--coral),#FF5F8A);color:white;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:5px;}
+.cbs{padding:12px 20px;border-radius:50px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;text-decoration:none;}
+
+.cf-wrap{position:fixed;inset:0;pointer-events:none;z-index:400;}
+.cf{position:absolute;animation:cff linear forwards;}
+@keyframes cff{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(60px);background:#201C14;color:white;padding:10px 18px;border-radius:12px;font-size:12px;font-weight:700;opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);z-index:500;white-space:nowrap;border:1px solid rgba(255,255,255,.1);}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
-
-/* MOBILE */
-@media(max-width:480px){
-  .comp-stats{grid-template-columns:1fr 1fr 1fr;}
-  .cs-val{font-size:20px;}
-}
 </style>
 </head>
 <body>
 
-<!-- ══ PRE-SESSION ══ -->
+<!-- PRE SESSION -->
 <div id="preSession">
-  <div class="pre-badge">🔥 Day 7 Streak · Lower Back Protocol</div>
-  <div class="pre-title">Today's <span>30-Min</span><br/>Session</div>
-  <div class="pre-sub">5 exercises · AI-guided · Earn 120 XP · Your physio-approved protocol</div>
-
-  <div class="session-info-row">
-    <div class="si-card"><div class="si-val">30</div><div class="si-lbl">Minutes</div></div>
-    <div class="si-card"><div class="si-val">5</div><div class="si-lbl">Exercises</div></div>
-    <div class="si-card"><div class="si-val">120</div><div class="si-lbl">XP to earn</div></div>
-    <div class="si-card"><div class="si-val">🔥7</div><div class="si-lbl">Day Streak</div></div>
+  <div class="pre-badge">📸 Real Exercise Photos · Auto Timer</div>
+  <div class="pre-title">Your <span>Recovery Session</span></div>
+  <div class="pre-sub">Step-by-step photo frames show exactly how to do each exercise. Just follow along!</div>
+  <div class="si-row">
+    <div class="si-card"><div class="si-v">5</div><div class="si-l">Exercises</div></div>
+    <div class="si-card"><div class="si-v">Auto</div><div class="si-l">Timer</div></div>
+    <div class="si-card"><div class="si-v">120</div><div class="si-l">XP</div></div>
   </div>
-
-  <div class="exercises-preview">
-    <div class="ep-item"><div class="ep-num">1</div><div class="ep-name">Pelvic Tilts</div><div class="ep-detail">3 sets · 10 reps</div></div>
-    <div class="ep-item"><div class="ep-num">2</div><div class="ep-name">Cat-Cow Stretch</div><div class="ep-detail">3 sets · 12 reps</div></div>
-    <div class="ep-item"><div class="ep-num">3</div><div class="ep-name">Knee to Chest</div><div class="ep-detail">3 sets · 10 reps each side</div></div>
-    <div class="ep-item"><div class="ep-num">4</div><div class="ep-name">Bird Dog</div><div class="ep-detail">3 sets · 8 reps each side</div></div>
-    <div class="ep-item"><div class="ep-num">5</div><div class="ep-name">Glute Bridge</div><div class="ep-detail">3 sets · 15 reps</div></div>
+  <div class="ep-list">
+    <div class="ep-item"><div class="ep-n">1</div><div class="ep-name">Pelvic Tilts</div><div class="ep-d">3×10 · 4s</div></div>
+    <div class="ep-item"><div class="ep-n">2</div><div class="ep-name">Cat-Cow Stretch</div><div class="ep-d">3×12 · 4s</div></div>
+    <div class="ep-item"><div class="ep-n">3</div><div class="ep-name">Knee to Chest</div><div class="ep-d">3×10 · 5s</div></div>
+    <div class="ep-item"><div class="ep-n">4</div><div class="ep-name">Bird Dog</div><div class="ep-d">3×8 · 5s</div></div>
+    <div class="ep-item"><div class="ep-n">5</div><div class="ep-name">Glute Bridge</div><div class="ep-d">3×15 · 3s</div></div>
   </div>
-
-  <button class="btn-start-session" onclick="startSession()">🚀 Start Session</button>
+  <button class="btn-start" onclick="startSession()">▶ Start Session</button>
 </div>
 
-<!-- ══ MAIN SESSION ══ -->
+<!-- MAIN SESSION -->
 <div id="mainSession">
-  <!-- HUD -->
   <div class="hud">
-    <div class="hud-left">
-      <button class="hud-back" onclick="showToast('💡 Tap twice to exit session')">←</button>
-      <div class="hud-title" id="hudTitle">Exercise 1 of 5</div>
+    <button class="hud-back" onclick="if(confirm('Exit?'))location.href='index.html'">←</button>
+    <span class="hud-title" id="hudTitle">1 / 5</span>
+    <div class="hud-c">
+      <div class="spb"><div class="spb-f" id="spbF" style="width:0"></div></div>
+      <div class="hud-pct" id="hudPct">0%</div>
     </div>
-    <div class="hud-center">
-      <div class="session-progress-bar"><div class="session-progress-fill" id="sessionProgressFill" style="width:20%"></div></div>
-      <div class="hud-progress-text" id="hudProgressText">20% complete</div>
-    </div>
-    <div class="hud-right">
-      <div class="xp-pill">⭐ <span id="currentXP">0</span> XP</div>
-      <div class="timer-pill">⏱ <span id="sessionTimer">30:00</span></div>
+    <div class="hud-r">
+      <div class="xp-p">⭐ <span id="curXP">0</span></div>
+      <div class="t-p">⏱ <span id="sesT">30:00</span></div>
     </div>
   </div>
 
-  <!-- EXERCISE AREA -->
-  <div class="exercise-area">
+  <div class="ex-area">
     <div class="ex-card">
-      <div class="ex-number" id="exNumber">Exercise 1 of 5</div>
-      <div class="ex-name" id="exName">Pelvic Tilts</div>
-      <div class="ex-target" id="exTarget">Targets: Lower back · Core stability</div>
-
-      <div class="ex-animation">
-        <div class="ex-figure" id="exFigure">🧘</div>
-        <div class="ex-anim-label" id="exAnimLabel">Performing Pelvic Tilts</div>
+      <div class="ex-header">
+        <div class="ex-number" id="exNum">EXERCISE 1 OF 5</div>
+        <div class="ex-name" id="exName">Pelvic Tilts</div>
+        <div class="ex-target" id="exTarget">Lower back · Core · Pelvis</div>
       </div>
 
-      <div class="sets-reps">
-        <div class="sr-item"><div class="sr-val" id="currentSet">1</div><div class="sr-lbl">Current Set</div></div>
-        <div class="sr-item"><div class="sr-val" id="totalSets">3</div><div class="sr-lbl">Total Sets</div></div>
-        <div class="sr-item"><div class="sr-val" id="targetReps">10</div><div class="sr-lbl">Reps per Set</div></div>
+      <!-- PHOTO STAGE -->
+      <div class="photo-stage">
+        <div class="phase-chip" id="phaseChip">▶ START POSITION</div>
+        <div class="muscle-chip-overlay" id="muscleOverlay">🦴 Lower Back</div>
+
+        <!-- Photo frames (filled by JS) -->
+        <div id="framesContainer"></div>
+
+        <!-- Nav dots -->
+        <div class="photo-dots" id="photoDots"></div>
       </div>
 
-      <div class="rep-counter-wrap">
-        <div class="rep-ring">
-          <svg width="120" height="120" viewBox="0 0 120 120">
-            <circle class="rep-ring-bg" cx="60" cy="60" r="45"/>
-            <circle class="rep-ring-fill" id="repRingFill" cx="60" cy="60" r="45" style="stroke-dashoffset:283;"/>
-          </svg>
-          <div class="rep-number">
-            <div class="rep-num-val" id="repCount">0</div>
-            <div class="rep-num-lbl">reps done</div>
+      <!-- REEL STRIP -->
+      <div class="reel-strip" id="reelStrip"></div>
+
+      <!-- COACH TIP -->
+      <div class="coach-tip">
+        <div class="tip-lbl">👤 Coach</div>
+        <div class="tip-txt" id="tipTxt">Loading...</div>
+      </div>
+
+      <!-- MUSCLE TAGS -->
+      <div class="muscle-tags" id="muscleTags"></div>
+
+      <div class="ex-body">
+        <div class="sets-row">
+          <div class="sr"><div class="sr-v" id="curSet">1</div><div class="sr-l">Set</div></div>
+          <div class="sr"><div class="sr-v" id="totSets">3</div><div class="sr-l">Total</div></div>
+          <div class="sr"><div class="sr-v" id="totReps">10</div><div class="sr-l">Reps</div></div>
+        </div>
+
+        <div class="rep-block">
+          <div class="rep-rw">
+            <svg viewBox="0 0 106 106" width="106" height="106">
+              <circle class="rr-bg" cx="53" cy="53" r="47.5"/>
+              <circle class="rr-f" id="repRing" cx="53" cy="53" r="47.5"/>
+            </svg>
+            <div class="rep-c"><div class="rep-n" id="repCount">0</div><div class="rep-l">REPS</div></div>
           </div>
+          <div class="rtb-txt" id="rtbTxt">⏱ Starting...</div>
+          <div class="rtb-wrap"><div class="rtb" id="rtb" style="width:100%"></div></div>
         </div>
-      </div>
 
-      <div class="ex-instructions">
-        <div class="inst-title">How to perform</div>
-        <div class="inst-list" id="instList">
-          <div class="inst-item"><div class="inst-dot"></div>Lie on your back with knees bent, feet flat on floor</div>
-          <div class="inst-item"><div class="inst-dot"></div>Gently flatten your lower back against the floor</div>
-          <div class="inst-item"><div class="inst-dot"></div>Hold for 5 seconds, then release slowly</div>
-          <div class="inst-item"><div class="inst-dot"></div>Breathe normally throughout the movement</div>
+        <div class="inst-box">
+          <div class="inst-ttl">Step by step</div>
+          <div id="instList"></div>
         </div>
-      </div>
-
-      <div class="ex-btns">
-        <button class="btn-rep" onclick="countRep()" id="repBtn">✓ Count Rep</button>
-        <button class="btn-skip" onclick="skipExercise()">Skip →</button>
+        <button class="btn-skip" onclick="skipEx()">⏭ Skip exercise</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- REST SCREEN -->
-<div class="rest-screen" id="restScreen">
-  <div style="font-size:48px;margin-bottom:16px">😮‍💨</div>
-  <div class="rest-title">Rest Time!</div>
-  <div class="rest-sub" id="restSubText">Great set! Take a breath before the next one.</div>
-  <div class="rest-timer" id="restTimer">30</div>
-  <div class="rest-lbl">seconds rest</div>
-  <button class="btn-skip-rest" onclick="skipRest()">Skip Rest →</button>
+<!-- REST -->
+<div class="overlay" id="restScreen">
+  <div class="rest-icon">😮‍💨</div>
+  <div class="rest-ttl">Rest Up!</div>
+  <div class="rest-sub" id="restSub">Shake it out. Next set coming.</div>
+  <div class="rest-rw">
+    <svg viewBox="0 0 116 116" width="116" height="116">
+      <circle class="rrb" cx="58" cy="58" r="52.5"/>
+      <circle class="rrf" id="restRing" cx="58" cy="58" r="52.5" style="stroke-dashoffset:0"/>
+    </svg>
+    <div class="rest-n" id="restN">30</div>
+  </div>
+  <div class="rest-lbl">seconds</div>
+  <button class="btn-sr" onclick="skipRest()">Skip →</button>
+</div>
+
+<!-- SIGNIFICANCE -->
+<div class="overlay" id="sigScreen">
+  <div class="sig-badge">✨ Exercise Complete</div>
+  <div class="sig-em" id="sigEm">🎯</div>
+  <div class="sig-nm" id="sigNm">Exercise</div>
+  <div class="sig-xp" id="sigXP">⭐ +20 XP</div>
+  <div class="sig-card">
+    <div class="sig-ttl">Why this exercise matters</div>
+    <div id="sigPts"></div>
+  </div>
+  <button class="sig-btn" id="sigBtn" onclick="afterSig()">Continue →</button>
 </div>
 
 <!-- COMPLETION -->
-<div class="completion-screen" id="completionScreen">
-  <div class="confetti">🎉</div>
-  <div class="comp-title">Session Complete!</div>
-  <div class="comp-sub">Amazing work! You completed your full 30-minute session. Your body is getting stronger every day.</div>
-  <div class="xp-earned">⭐ +120 XP Earned!</div>
+<div class="overlay" id="completionScreen">
+  <div class="cf-wrap" id="cfW"></div>
+  <div class="comp-orb">🏆</div>
+  <div class="comp-ttl">Session Complete!</div>
+  <div class="comp-sub">Outstanding — you're healing and getting stronger!</div>
+  <div class="comp-xp" id="compXP">0</div>
+  <div class="comp-xl">XP Earned</div>
   <div class="comp-stats">
-    <div class="cs-item"><div class="cs-val">5/5</div><div class="cs-lbl">Exercises</div></div>
-    <div class="cs-item"><div class="cs-val">165</div><div class="cs-lbl">Total Reps</div></div>
-    <div class="cs-item"><div class="cs-val">🔥8</div><div class="cs-lbl">Day Streak</div></div>
+    <div class="cs"><div class="cs-v">5</div><div class="cs-l">Exercises</div></div>
+    <div class="cs"><div class="cs-v" id="compReps">0</div><div class="cs-l">Reps</div></div>
   </div>
   <div class="comp-btns">
-    <a class="btn-comp-primary" href="index.html">🏠 Back to Home</a>
-    <button class="btn-comp-secondary" onclick="showToast('📊 Progress tracking coming soon!')">📊 View Progress</button>
+    <a class="cbp" href="index.html">🏠 Home</a>
+    <a class="cbs" href="session.html">🔁 Again</a>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script>
-// ── EXERCISE DATA ──
-const exercises = [
-  {name:'Pelvic Tilts',target:'Lower back · Core stability',figure:'🧘',sets:3,reps:10,xp:20,anim:'Performing Pelvic Tilts',instructions:['Lie on your back with knees bent, feet flat on floor','Gently flatten your lower back against the floor','Hold for 5 seconds, then release slowly','Breathe normally throughout the movement']},
-  {name:'Cat-Cow Stretch',target:'Spine mobility · Flexibility',figure:'🐱',sets:3,reps:12,xp:25,anim:'Stretching Spine',instructions:['Start on hands and knees, back flat (table position)','Arch your back up like a scared cat — hold 3 seconds','Then dip your back down like a cow — hold 3 seconds','Move slowly and breathe with each movement']},
-  {name:'Knee to Chest',target:'Lower back · Hip flexors',figure:'🤸',sets:3,reps:10,xp:20,anim:'Stretching Hip Flexors',instructions:['Lie on your back, legs straight','Bring one knee up and hug it gently to your chest','Hold for 20–30 seconds, feel the stretch','Switch legs and repeat — keep breathing deeply']},
-  {name:'Bird Dog',target:'Core stability · Balance',figure:'🦅',sets:3,reps:8,xp:30,anim:'Core Stabilisation',instructions:['Start on hands and knees in table position','Extend right arm forward AND left leg back simultaneously','Hold for 3 seconds keeping back flat — don\'t rotate','Return and repeat on opposite side']},
-  {name:'Glute Bridge',target:'Glutes · Lower back · Hamstrings',figure:'🌉',sets:3,reps:15,xp:25,anim:'Activating Glutes',instructions:['Lie on back, knees bent, feet flat, arms by sides','Push through heels to lift hips up — squeeze glutes at top','Hold for 2–3 seconds at the top','Lower slowly — don\'t let hips crash down']},
+/* ═══════════════════════════════════════════════════════════════
+   REAL EXERCISE PHOTO DATABASE
+   Source: yuhonas/free-exercise-db (public domain, no API key needed)
+   URL pattern: https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/[Name]/[0|1].jpg
+   Each exercise has 2 photos: position 0 = start, position 1 = end
+   We add a HOLD phase by repeating photo 1 with different label.
+═══════════════════════════════════════════════════════════════ */
+
+const BASE = 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/';
+
+const EXDB = [
+  {
+    name: 'Pelvic Tilts',
+    target: 'Lower back · Core · Pelvis',
+    sets: 3, reps: 10, repSecs: 4, xp: 20, em: '🦴',
+    muscle: '🦴 Lower Back',
+    primaryMuscles: ['Lower Back', 'Core'],
+    secondaryMuscles: ['Pelvis', 'Glutes'],
+    // Real photo URLs from free-exercise-db
+    photos: [
+      { url: BASE + 'Pelvic_Tilt/0.jpg',        phase: '▶ START — Lie flat, knees bent',    tip: 'Lie on your back, knees bent, feet flat on mat, arms by your sides.' },
+      { url: BASE + 'Pelvic_Tilt/1.jpg',        phase: '⬆️ TILT — Press back into mat',     tip: 'Tighten belly and PRESS your lower back flat into the floor. Feel the spine touch the mat!' },
+      { url: BASE + 'Pelvic_Tilt/0.jpg',        phase: '⬇️ RELEASE — Return to start',      tip: 'Release slowly and return to neutral. Breathe normally throughout — never hold breath.' },
+    ],
+    reelFrames: [
+      { icon: '🛌', label: 'Start' },
+      { icon: '⬆️', label: 'Tilt' },
+      { icon: '🔄', label: 'Release' },
+    ],
+    instructions: ['Lie on back, knees bent 90°, feet flat', 'Tighten belly — press lower back into mat', 'Hold 4 seconds, breathe normally', 'Release slowly and repeat'],
+    sig: [
+      { i: '🦴', t: '<strong>Decompresses lumbar vertebrae</strong> — flattening the lower back reduces disc pressure and relieves facet joint compression from prolonged sitting.' },
+      { i: '💪', t: '<strong>Activates transversus abdominis</strong> — the deepest core muscle and primary stabiliser of the lumbar spine, commonly weakened in back pain patients.' },
+      { i: '🩺', t: '<strong>First-line back rehab</strong> — prescribed globally as the safest and most effective starting point for spinal rehabilitation programmes.' },
+      { i: '🔄', t: '<strong>Restores pelvic awareness</strong> — trains your brain to control neutral spine position, the foundation of posture correction.' },
+    ]
+  },
+  {
+    name: 'Cat-Cow Stretch',
+    target: 'Full spine · Discs · Erector muscles',
+    sets: 3, reps: 12, repSecs: 4, xp: 25, em: '🐱',
+    muscle: '🔄 Full Spine',
+    primaryMuscles: ['Thoracic Spine', 'Lumbar Spine'],
+    secondaryMuscles: ['Erectors', 'Core'],
+    photos: [
+      { url: BASE + 'Cat_Stretch/0.jpg',        phase: '🐄 COW — Belly drops, head up',      tip: 'On hands and knees. Inhale — let belly drop toward floor, lift your head and tailbone.' },
+      { url: BASE + 'Cat_Stretch/1.jpg',        phase: '🐱 CAT — Round spine upward',        tip: 'Exhale — round your spine UP to the ceiling. Chin tucks to chest. Feel every vertebra move!' },
+      { url: BASE + 'Cat_Stretch/0.jpg',        phase: '🔄 FLOW — Repeat the cycle',         tip: 'Move slowly between Cat and Cow. Coordinate with breath — exhale CAT, inhale COW.' },
+    ],
+    reelFrames: [
+      { icon: '🐄', label: 'Cow' },
+      { icon: '🐱', label: 'Cat' },
+      { icon: '🔄', label: 'Flow' },
+    ],
+    instructions: ['Start on hands and knees, back neutral', 'COW: inhale, drop belly, lift head', 'CAT: exhale, round spine up to ceiling', 'Flow slowly — feel each vertebra'],
+    sig: [
+      { i: '🔄', t: '<strong>Mobilises every spinal segment</strong> — moves all vertebrae through both flexion and extension simultaneously, no other exercise does this.' },
+      { i: '💧', t: '<strong>Hydrates intervertebral discs</strong> — rhythmic movement pumps nutrients into discs that have no direct blood supply.' },
+      { i: '🧘', t: '<strong>Releases erector spinae tension</strong> — relaxes deep back muscles tightened by sitting, which are a primary driver of chronic back pain.' },
+      { i: '🌬️', t: '<strong>Improves thoracic mobility</strong> — breath-coordinated movement enhances rib cage expansion and diaphragm function.' },
+    ]
+  },
+  {
+    name: 'Knee to Chest',
+    target: 'Hip flexors · Piriformis · Lumbar',
+    sets: 3, reps: 10, repSecs: 5, xp: 20, em: '🦵',
+    muscle: '🦵 Hip Flexors',
+    primaryMuscles: ['Hip Flexors', 'Piriformis'],
+    secondaryMuscles: ['Lower Back', 'Glutes'],
+    photos: [
+      { url: BASE + 'Lying_Glute_-_It_Band_Stretch/0.jpg', phase: '▶ START — Lie flat, legs extended', tip: 'Lie flat on your back, legs extended. Relax your entire body into the mat.' },
+      { url: BASE + 'Lying_Glute_-_It_Band_Stretch/1.jpg', phase: '🤗 PULL — Hug knee to chest',        tip: 'Bend one knee and gently hug it toward your chest with both hands. Feel the deep hip stretch!' },
+      { url: BASE + 'Lying_Glute_-_It_Band_Stretch/1.jpg', phase: '💚 HOLD — Breathe into stretch',     tip: 'Hold and breathe — relax deeper into the stretch on every exhale. Hold 5 full seconds.' },
+    ],
+    reelFrames: [
+      { icon: '🛌', label: 'Start' },
+      { icon: '🤗', label: 'Pull' },
+      { icon: '💚', label: 'Hold' },
+    ],
+    instructions: ['Lie on back, legs extended', 'Bend one knee, hold shin with both hands', 'Draw knee gently toward chest', 'Hold 5s — breathe, then switch legs'],
+    sig: [
+      { i: '🦵', t: '<strong>Decompresses lumbar facet joints</strong> — opens posterior joint spaces, directly relieving facet pain and morning stiffness.' },
+      { i: '🔓', t: '<strong>Stretches the piriformis</strong> — a tight piriformis compresses the sciatic nerve; this stretch targets it precisely.' },
+      { i: '😴', t: '<strong>Best morning exercise</strong> — particularly effective at reducing overnight joint stiffness before loading the spine.' },
+      { i: '🏃', t: '<strong>Improves hip flexion range</strong> — essential range of motion for walking, climbing stairs, and all hip-bending activities.' },
+    ]
+  },
+  {
+    name: 'Bird Dog',
+    target: 'Core · Multifidus · Spinal stability',
+    sets: 3, reps: 8, repSecs: 5, xp: 30, em: '🦅',
+    muscle: '🧠 Core & Multifidus',
+    primaryMuscles: ['Multifidus', 'Core'],
+    secondaryMuscles: ['Glutes', 'Shoulders'],
+    photos: [
+      { url: BASE + 'Bird_Dog/0.jpg',           phase: '▶ START — Hands and knees',          tip: 'On hands and knees. Back FLAT like a table. Wrists under shoulders, knees under hips.' },
+      { url: BASE + 'Bird_Dog/1.jpg',           phase: '⚖️ EXTEND — Opposite arm & leg',     tip: 'Extend right arm forward AND left leg back simultaneously. Do not let hips rotate or drop!' },
+      { url: BASE + 'Bird_Dog/1.jpg',           phase: '🔥 HOLD — Core braced, hips level',  tip: 'Hold 5 seconds — imagine a glass of water on your lower back. Don\'t spill it! Then switch sides.' },
+    ],
+    reelFrames: [
+      { icon: '🪵', label: 'Start' },
+      { icon: '⚖️', label: 'Extend' },
+      { icon: '🔥', label: 'Hold' },
+    ],
+    instructions: ['Start on hands & knees, back flat', 'Extend right arm AND left leg together', 'Hold 5s — keep hips perfectly level', 'Return and switch to opposite side'],
+    sig: [
+      { i: '⚖️', t: '<strong>Rebuilds the multifidus</strong> — the most critical deep spinal stabiliser, consistently found atrophied in back pain patients. This directly targets it.' },
+      { i: '🧠', t: '<strong>Neuromuscular retraining</strong> — challenges the brain to stabilise under dual-limb load, restoring motor control patterns lost during injury.' },
+      { i: '🏗️', t: '<strong>Builds anti-rotation strength</strong> — resisting spinal rotation is essential for protecting the spine during lifting, carrying, and sport.' },
+      { i: '🎯', t: '<strong>Gold standard guidelines</strong> — recommended by NICE, APTA, and Cochrane reviews for all spinal rehabilitation programmes.' },
+    ]
+  },
+  {
+    name: 'Glute Bridge',
+    target: 'Glutes · Hamstrings · Posterior chain',
+    sets: 3, reps: 15, repSecs: 3, xp: 25, em: '🏋️',
+    muscle: '🍑 Gluteus Maximus',
+    primaryMuscles: ['Gluteus Maximus', 'Hamstrings'],
+    secondaryMuscles: ['Lower Back', 'Core'],
+    photos: [
+      { url: BASE + 'Glute_Bridge/0.jpg',       phase: '▶ START — Lie back, knees bent',     tip: 'Lie on back, knees bent 90°, feet hip-width apart. Arms flat by sides. Core engaged.' },
+      { url: BASE + 'Glute_Bridge/1.jpg',       phase: '⬆️ PUSH — Drive hips to ceiling',    tip: 'Push through your HEELS — drive hips up! Shoulders, hips and knees form a straight line.' },
+      { url: BASE + 'Glute_Bridge/1.jpg',       phase: '🔥 SQUEEZE — Clench glutes hard!',   tip: 'SQUEEZE your glutes as hard as you can at the top! Hold 2 seconds. Then lower slowly.' },
+    ],
+    reelFrames: [
+      { icon: '🛌', label: 'Start' },
+      { icon: '⬆️', label: 'Push Up' },
+      { icon: '🔥', label: 'Squeeze' },
+    ],
+    instructions: ['Lie on back, knees bent 90°, feet flat', 'Push through heels — drive hips up', 'Squeeze glutes hard at top — hold 2s', 'Lower slowly and with full control'],
+    sig: [
+      { i: '🍑', t: '<strong>Rebuilds gluteus maximus</strong> — the body\'s largest muscle. Glute weakness directly drives lower back and knee pain in most patients.' },
+      { i: '🔗', t: '<strong>Restores the posterior chain</strong> — bridges hamstrings to spinal extensors, restoring the force transfer needed for pain-free movement.' },
+      { i: '🛡️', t: '<strong>Directly protects your lower back</strong> — strong glutes reduce lumbar erector overload by up to 30%, cutting chronic back pain significantly.' },
+      { i: '📐', t: '<strong>Corrects anterior pelvic tilt</strong> — counteracts the pelvis tipping forward from sitting, a primary root cause of lower back pain.' },
+    ]
+  }
 ];
 
-let currentEx = 0;
-let currentSet = 1;
-let currentReps = 0;
-let totalXP = 0;
-let sessionSeconds = 30 * 60;
-let restSeconds = 30;
-let sessionTimer, restTimer;
-let toastTimer;
-let isResting = false;
+/* ═══════════════════════════
+   PHOTO FRAME CONTROLLER
+═══════════════════════════ */
+let curPhotoIdx = 0;
+let photoTimer = null;
 
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.classList.remove('show'),2500);
+function buildPhotoStage(ex) {
+  const container = document.getElementById('framesContainer');
+  const dots = document.getElementById('photoDots');
+  const reel = document.getElementById('reelStrip');
+
+  // Build frames
+  container.innerHTML = ex.photos.map((p, i) => `
+    <div class="photo-frame ${i === 0 ? 'active' : ''}" id="frame_${i}">
+      <img src="${p.url}" alt="${p.phase}"
+           onerror="this.classList.add('error');this.nextElementSibling.style.display='flex';"
+           style="width:100%;height:100%;object-fit:cover;"/>
+      <div class="fallback" style="display:none">
+        <div class="fallback-icon">${ex.reelFrames[i]?.icon || '📸'}</div>
+        <div class="fallback-label">${p.phase}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // Build dots
+  dots.innerHTML = ex.photos.map((_, i) =>
+    `<div class="pd ${i === 0 ? 'active' : ''}" id="dot_${i}"></div>`
+  ).join('');
+
+  // Build reel strip
+  reel.innerHTML = ex.reelFrames.map((f, i) => `
+    <div class="reel-frame ${i === 0 ? 'active' : ''}" id="reel_${i}" onclick="showPhotoFrame(${i})">
+      <div class="rf-icon">${f.icon}</div>
+      <div class="rf-label">${f.label}</div>
+    </div>
+  `).join('');
+
+  // Build muscle tags
+  const tags = document.getElementById('muscleTags');
+  tags.innerHTML =
+    ex.primaryMuscles.map(m => `<div class="mt primary">💪 ${m}</div>`).join('') +
+    ex.secondaryMuscles.map(m => `<div class="mt secondary">${m}</div>`).join('');
+
+  // Set overlay labels
+  document.getElementById('muscleOverlay').textContent = ex.muscle;
+
+  // Start cycling
+  curPhotoIdx = 0;
+  showPhotoFrame(0);
+  startPhotoCycle(ex);
 }
 
-function startSession(){
-  document.getElementById('preSession').style.display='none';
-  document.getElementById('mainSession').style.display='block';
-  loadExercise(0);
-  startSessionTimer();
-  showToast('🔥 Session started! Let\'s go!');
+function showPhotoFrame(idx) {
+  const ex = EXDB[curEx];
+  curPhotoIdx = idx;
+
+  // Toggle frames
+  document.querySelectorAll('.photo-frame').forEach((f, i) => f.classList.toggle('active', i === idx));
+  // Toggle dots
+  document.querySelectorAll('.pd').forEach((d, i) => d.classList.toggle('active', i === idx));
+  // Toggle reel
+  document.querySelectorAll('.reel-frame').forEach((r, i) => r.classList.toggle('active', i === idx));
+
+  // Update overlays
+  const photo = ex.photos[idx];
+  document.getElementById('phaseChip').textContent = photo.phase;
+
+  // Fade tip
+  const tipEl = document.getElementById('tipTxt');
+  tipEl.style.opacity = '0';
+  setTimeout(() => {
+    tipEl.textContent = photo.tip;
+    tipEl.style.opacity = '1';
+    tipEl.style.transition = 'opacity .3s';
+  }, 200);
 }
 
-function loadExercise(idx){
-  const ex = exercises[idx];
-  document.getElementById('exNumber').textContent = `Exercise ${idx+1} of ${exercises.length}`;
-  document.getElementById('exName').textContent = ex.name;
-  document.getElementById('exTarget').textContent = 'Targets: ' + ex.target;
-  document.getElementById('exFigure').textContent = ex.figure;
-  document.getElementById('exAnimLabel').textContent = ex.anim;
-  document.getElementById('totalSets').textContent = ex.sets;
-  document.getElementById('targetReps').textContent = ex.reps;
-  document.getElementById('currentSet').textContent = '1';
-  document.getElementById('hudTitle').textContent = `Exercise ${idx+1} of ${exercises.length}`;
+function startPhotoCycle(ex) {
+  clearInterval(photoTimer);
+  photoTimer = setInterval(() => {
+    const next = (curPhotoIdx + 1) % ex.photos.length;
+    showPhotoFrame(next);
+  }, 2800); // cycles every 2.8 seconds, synced with rep timer feel
+}
 
-  // Instructions
-  const inst = document.getElementById('instList');
-  inst.innerHTML = ex.instructions.map(i=>`<div class="inst-item"><div class="inst-dot"></div>${i}</div>`).join('');
+/* ═══════════════════════════
+   APP STATE & LOGIC
+═══════════════════════════ */
+let curEx=0, curSet=1, curReps=0, totalXP=0, totalReps=0;
+let sesSecs=1800, restSecs=0;
+let sesTimer=null, restTimer=null, repTimer=null;
+let repSecs=0, repMax=4;
+let sigNext=null, toastT;
 
-  currentSet = 1;
-  currentReps = 0;
-  updateRepRing(0, ex.reps);
+const $ = id => document.getElementById(id);
+function toast(m) {
+  clearTimeout(toastT);
+  const t = $('toast'); t.textContent = m; t.classList.add('show');
+  toastT = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function loadEx(idx) {
+  curEx = idx; curSet = 1; curReps = 0;
+  const ex = EXDB[idx];
+  $('exNum').textContent     = `EXERCISE ${idx+1} OF ${EXDB.length}`;
+  $('exName').textContent    = ex.name;
+  $('exTarget').textContent  = ex.target;
+  $('totSets').textContent   = ex.sets;
+  $('totReps').textContent   = ex.reps;
+  $('hudTitle').textContent  = `${idx+1} / ${EXDB.length}`;
+  $('instList').innerHTML    = ex.instructions.map(i =>
+    `<div class="inst-item"><div class="inst-dot"></div>${i}</div>`).join('');
+
+  buildPhotoStage(ex);
+  updateRing(0, ex.reps);
   updateHUD();
+  startRepTimer(ex.repSecs);
 }
 
-function updateRepRing(done, total){
-  document.getElementById('repCount').textContent = done;
-  const circ = 283;
-  const offset = circ - (done/total)*circ;
-  document.getElementById('repRingFill').style.strokeDashoffset = Math.max(0,offset);
+function updateRing(d, tot) {
+  $('repCount').textContent = d;
+  $('repRing').style.strokeDashoffset = Math.max(0, 298 - (d/tot)*298);
 }
 
-function updateHUD(){
-  const pct = Math.round(((currentEx + (currentSet-1)/exercises[currentEx].sets) / exercises.length)*100);
-  document.getElementById('sessionProgressFill').style.width = pct+'%';
-  document.getElementById('hudProgressText').textContent = pct+'% complete';
-  document.getElementById('currentXP').textContent = totalXP;
-  document.getElementById('currentSet').textContent = currentSet;
+function updateHUD() {
+  const ex = EXDB[curEx];
+  const pct = Math.round(((curEx + (curSet-1)/ex.sets) / EXDB.length) * 100);
+  $('spbF').style.width  = pct + '%';
+  $('hudPct').textContent = pct + '%';
+  $('curXP').textContent  = totalXP;
+  $('curSet').textContent = curSet;
 }
 
-function countRep(){
-  const ex = exercises[currentEx];
-  currentReps++;
-  updateRepRing(currentReps, ex.reps);
+function startRepTimer(s) {
+  clearInterval(repTimer); repMax = s; repSecs = s; tickUI();
+  repTimer = setInterval(() => {
+    repSecs -= 0.1;
+    if (repSecs <= 0) { clearInterval(repTimer); autoRep(); }
+    else tickUI();
+  }, 100);
+}
 
-  // Haptic-like feedback
-  const btn = document.getElementById('repBtn');
-  btn.style.transform='scale(.96)';
-  setTimeout(()=>btn.style.transform='',150);
+function tickUI() {
+  const ex = EXDB[curEx];
+  $('rtb').style.width  = Math.max(0, (repSecs/repMax)*100) + '%';
+  $('rtbTxt').textContent = `⏱ Rep ${curReps+1}/${ex.reps} — ${Math.ceil(repSecs)}s`;
+}
 
-  if(currentReps >= ex.reps){
-    // Set complete
-    totalXP += Math.round(ex.xp / ex.sets);
-    updateHUD();
-
-    if(currentSet < ex.sets){
-      // Start rest between sets
-      showRestScreen(`Set ${currentSet} complete! 💪`, 20);
-      currentSet++;
-      currentReps = 0;
+function autoRep() {
+  const ex = EXDB[curEx];
+  curReps++; totalReps++;
+  updateRing(curReps, ex.reps);
+  if (curReps >= ex.reps) {
+    totalXP += Math.round(ex.xp / ex.sets); updateHUD();
+    if (curSet < ex.sets) {
+      curSet++; curReps = 0; updateHUD();
+      showRest(`Set ${curSet-1} done! 💪 Rest before set ${curSet}`, 20);
     } else {
-      // Exercise complete
-      totalXP += 5; // bonus
-      showToast(`✅ ${ex.name} complete! +${ex.xp} XP`);
-      setTimeout(()=>{
-        if(currentEx < exercises.length - 1){
-          showRestScreen(`${ex.name} done! Rest before next exercise.`, 30);
-          currentEx++;
-          currentReps = 0;
-        } else {
-          showCompletion();
-        }
-      }, 800);
+      totalXP += 5; updateHUD();
+      clearInterval(photoTimer);
+      toast(`✅ ${ex.name} done! +${ex.xp} XP`);
+      setTimeout(() => showSig(ex), 700);
     }
+  } else {
+    startRepTimer(ex.repSecs);
   }
 }
 
-function showRestScreen(msg, secs){
-  isResting = true;
-  restSeconds = secs;
-  document.getElementById('restSubText').textContent = msg;
-  document.getElementById('restTimer').textContent = secs;
-  document.getElementById('restScreen').classList.add('visible');
-  restTimer = setInterval(()=>{
-    restSeconds--;
-    document.getElementById('restTimer').textContent = restSeconds;
-    if(restSeconds <= 0) skipRest();
+function showRest(msg, secs) {
+  clearInterval(repTimer); clearInterval(photoTimer);
+  restSecs = secs;
+  $('restSub').textContent = msg;
+  $('restN').textContent   = secs;
+  $('restRing').style.strokeDashoffset = '0';
+  $('restScreen').classList.add('show');
+  const circ = 330;
+  restTimer = setInterval(() => {
+    restSecs--;
+    $('restN').textContent = restSecs;
+    $('restRing').style.strokeDashoffset = String(circ * (1 - restSecs/secs));
+    if (restSecs <= 0) skipRest();
   }, 1000);
 }
 
-function skipRest(){
+function skipRest() {
   clearInterval(restTimer);
-  isResting = false;
-  document.getElementById('restScreen').classList.remove('visible');
-  loadExercise(currentEx);
-  showToast('💪 Back to work!');
+  $('restScreen').classList.remove('show');
+  loadEx(curEx);
+  toast('💪 Back to it!');
 }
 
-function skipExercise(){
-  showToast('⏭ Exercise skipped');
-  if(currentEx < exercises.length - 1){
-    currentEx++;
-    currentReps = 0;
-    currentSet = 1;
-    loadExercise(currentEx);
-  } else {
-    showCompletion();
+function showSig(ex) {
+  $('sigEm').textContent = ex.em;
+  $('sigNm').textContent = ex.name;
+  $('sigXP').textContent = `⭐ +${ex.xp} XP`;
+  $('sigPts').innerHTML  = ex.sig.map(s =>
+    `<div class="sig-pt"><div class="sig-pt-i">${s.i}</div><div class="sig-pt-t">${s.t}</div></div>`
+  ).join('');
+  const last = curEx >= EXDB.length - 1;
+  $('sigBtn').textContent = last ? '🏆 Finish!' : 'Next Exercise →';
+  sigNext = last ? 'finish' : 'next';
+  $('sigScreen').classList.add('show');
+}
+
+function afterSig() {
+  $('sigScreen').classList.remove('show');
+  if (sigNext === 'finish') finish();
+  else {
+    const prev = EXDB[curEx]; curEx++; curReps = 0;
+    showRest(`${prev.name} done! Rest before ${EXDB[curEx].name}`, 30);
   }
 }
 
-function showCompletion(){
-  clearInterval(sessionTimer);
-  document.getElementById('mainSession').style.display='none';
-  document.getElementById('completionScreen').classList.add('visible');
+function skipEx() {
+  clearInterval(repTimer); clearInterval(photoTimer);
+  if (curEx < EXDB.length-1) { curEx++; curReps = 0; curSet = 1; loadEx(curEx); }
+  else finish();
+  toast('⏭ Skipped');
 }
 
-function startSessionTimer(){
-  sessionTimer = setInterval(()=>{
-    sessionSeconds--;
-    const m = Math.floor(sessionSeconds/60);
-    const s = sessionSeconds%60;
-    document.getElementById('sessionTimer').textContent = `${m}:${s.toString().padStart(2,'0')}`;
-    if(sessionSeconds<=0) clearInterval(sessionTimer);
-  },1000);
+function finish() {
+  clearInterval(sesTimer); clearInterval(repTimer); clearInterval(photoTimer);
+  $('mainSession').style.display = 'none';
+  $('compXP').textContent   = totalXP;
+  $('compReps').textContent = totalReps;
+  $('completionScreen').classList.add('show');
+  confetti();
+}
+
+function confetti() {
+  const w = $('cfW');
+  const cols = ['#FF7B54','#F2A93B','#52B788','#9B6BFF','#2D9B8A','#FF9B76'];
+  for (let i = 0; i < 80; i++) {
+    setTimeout(() => {
+      const e = document.createElement('div'); e.className = 'cf';
+      e.style.cssText = `left:${Math.random()*100}%;background:${cols[~~(Math.random()*cols.length)]};width:${5+Math.random()*9}px;height:${5+Math.random()*9}px;border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${2+Math.random()*2.5}s;animation-delay:${Math.random()*1.5}s;`;
+      w.appendChild(e); setTimeout(() => e.remove(), 5000);
+    }, i * 20);
+  }
+}
+
+function startSession() {
+  $('preSession').style.display = 'none';
+  $('mainSession').style.display = 'block';
+  loadEx(0);
+  sesTimer = setInterval(() => {
+    sesSecs--;
+    const m = ~~(sesSecs/60), s = sesSecs%60;
+    $('sesT').textContent = `${m}:${String(s).padStart(2,'0')}`;
+    if (sesSecs <= 0) clearInterval(sesTimer);
+  }, 1000);
+  toast('🔥 Session started!');
 }
 </script>
 </body>
